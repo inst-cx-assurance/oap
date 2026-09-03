@@ -1,0 +1,63 @@
+{
+  "name": "Scenario D - evidence package changed",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:ALPHA-EVIDENCE-CHANGED",
+  "expectedState": "reassessment_required",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/supersessionStatus", "value": "superseded" },
+    { "op": "replace", "path": "/records/24/status", "value": "superseded" },
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:external-package:CW101-RFDC-REV2",
+        "entityType": "external-package-reference",
+        "recordVersion": "2.0.0",
+        "createdAt": "2026-09-03T10:00:00Z",
+        "supersedes": "oap:external-package:CW101-RFDC",
+        "sourceProtocolId": "OCRS",
+        "sourceProtocolVersion": "0.1.0",
+        "sourceProfileId": "ocrs:profile:rfdc",
+        "sourceProfileVersion": "0.1.0",
+        "packageId": "ocrs:package:CW-101-RFDC-READY-REV2",
+        "packageVersion": "0.2.0",
+        "manifestVersion": "0.1.0",
+        "contentHash": {
+          "algorithm": "sha256",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "canonicalizationMethod": "OCRS Canonical JSON v0.1",
+        "projectIdentifier": "ocrs:project:CW-101",
+        "subjectIdentifiers": ["ocrs:system:CW-101"],
+        "boundaryIdentifiers": ["ocrs:boundary:CW-101-SYSTEM", "ocrs:boundary:CW-101-RFDC"],
+        "createdAtSource": "2026-09-03T10:00:00Z",
+        "producingParty": "ocrs:party:commissioning-team",
+        "qualifications": ["Changed package requires new submission."],
+        "exclusions": ["Prior authorization basis is not replaced."],
+        "retrievalReference": "urn:example:ocrs:CW-101-RFDC-READY-REV2",
+        "custodyStatement": "Fictional controlled evidence repository",
+        "validationStatus": "verified",
+        "inventoryDigest": {
+          "algorithm": "sha256",
+          "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "supersessionStatus": "current"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:authorization-change:ALPHA-REASSESS",
+        "entityType": "authorization-change",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-03T10:05:00Z",
+        "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "changedByRoleAssignmentId": "oap:role-assignment:director",
+        "changedAt": "2026-09-03T10:05:00Z",
+        "changeType": "reassessment_required",
+        "basis": "The referenced OCRS package changed; the original authorization basis remains preserved and no substitution is allowed."
+      }
+    }
+  ]
+}

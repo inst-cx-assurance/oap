@@ -1,0 +1,7 @@
+{
+  "name": "auditor conclusion contradicts assessment",
+  "expectedCode": "AUDITOR_CONCLUSION_CONTRADICTION",
+  "mutations": [
+    { "op": "replace", "path": "/records/26/conclusion", "value": "evidence_insufficient" }
+  ]
+}

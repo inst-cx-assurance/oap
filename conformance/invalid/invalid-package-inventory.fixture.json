@@ -1,0 +1,5 @@
+{
+  "name": "invalid exact package inventory",
+  "expectedCode": "INVALID_PACKAGE_INVENTORY",
+  "mutations": [{ "op": "remove", "path": "/manifest/inventory/0" }]
+}

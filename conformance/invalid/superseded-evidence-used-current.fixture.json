@@ -1,0 +1,7 @@
+{
+  "name": "superseded evidence used as current",
+  "expectedCode": "SUPERSEDED_EVIDENCE_USED",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/supersessionStatus", "value": "superseded" }
+  ]
+}

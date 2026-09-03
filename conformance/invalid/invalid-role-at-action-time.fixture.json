@@ -1,0 +1,11 @@
+{
+  "name": "wrong role performs audit",
+  "expectedCode": "INVALID_ROLE_AT_ACTION_TIME",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/26/auditorRoleAssignmentId",
+      "value": "oap:role-assignment:submitter"
+    }
+  ]
+}

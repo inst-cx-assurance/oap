@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/external-package-reference.schema.json",
+  "title": "Integrity-bound external evidence package reference",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "sourceProtocolId",
+        "sourceProtocolVersion",
+        "packageId",
+        "packageVersion",
+        "manifestVersion",
+        "contentHash",
+        "canonicalizationMethod",
+        "projectIdentifier",
+        "subjectIdentifiers",
+        "boundaryIdentifiers",
+        "createdAtSource",
+        "producingParty",
+        "qualifications",
+        "exclusions",
+        "retrievalReference",
+        "custodyStatement",
+        "validationStatus",
+        "inventoryDigest",
+        "supersessionStatus"
+      ],
+      "properties": {
+        "entityType": { "const": "external-package-reference" },
+        "sourceProtocolId": { "type": "string", "minLength": 1 },
+        "sourceProtocolVersion": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+        },
+        "sourceProfileId": { "type": "string", "minLength": 1 },
+        "sourceProfileVersion": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+        },
+        "packageId": { "type": "string", "minLength": 1 },
+        "packageVersion": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+        },
+        "manifestVersion": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+        },
+        "contentHash": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/hash"
+        },
+        "canonicalizationMethod": { "type": "string", "minLength": 1 },
+        "projectIdentifier": { "type": "string", "minLength": 1 },
+        "subjectIdentifiers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "boundaryIdentifiers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "createdAtSource": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "producingParty": { "type": "string", "minLength": 1 },
+        "qualifications": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "exclusions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "retrievalReference": { "type": "string", "pattern": "^(https://|urn:)" },
+        "custodyStatement": { "type": "string", "minLength": 1 },
+        "validationStatus": { "enum": ["verified", "unverified", "failed"] },
+        "inventoryDigest": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/hash"
+        },
+        "supersessionStatus": { "enum": ["current", "superseded", "unknown"] },
+        "supersededByPackageReferenceId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

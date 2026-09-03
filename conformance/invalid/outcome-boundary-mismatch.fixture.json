@@ -1,0 +1,5 @@
+{
+  "name": "outcome or boundary mismatch",
+  "expectedCode": "OUTCOME_BOUNDARY_MISMATCH",
+  "mutations": [{ "op": "replace", "path": "/records/26/boundaryIds", "value": [] }]
+}

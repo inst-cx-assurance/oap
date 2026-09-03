@@ -1,0 +1,5 @@
+{
+  "name": "missing record version",
+  "expectedCode": "MISSING_RECORD_VERSION",
+  "mutations": [{ "op": "remove", "path": "/records/0/recordVersion" }]
+}

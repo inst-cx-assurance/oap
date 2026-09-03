@@ -1,0 +1,11 @@
+{
+  "name": "residual risk accepted by unauthorized role",
+  "expectedCode": "UNAUTHORIZED_RISK_ACCEPTANCE",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/29/directorRoleAssignmentId",
+      "value": "oap:role-assignment:auditor"
+    }
+  ]
+}

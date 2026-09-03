@@ -1,0 +1,7 @@
+{
+  "name": "software-generated human authorization",
+  "expectedCode": "SOFTWARE_GENERATED_AUTHORIZATION",
+  "mutations": [
+    { "op": "replace", "path": "/records/30/generationMethod", "value": "system_capture" }
+  ]
+}

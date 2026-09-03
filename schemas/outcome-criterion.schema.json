@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/outcome-criterion.schema.json",
+  "title": "Outcome criterion and evidence need",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "outcomeId",
+        "statement",
+        "evidenceNeed",
+        "sufficiencyCriteria",
+        "consequenceBasis"
+      ],
+      "properties": {
+        "entityType": { "const": "outcome-criterion" },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "statement": { "type": "string", "minLength": 1 },
+        "evidenceNeed": { "type": "string", "minLength": 1 },
+        "sufficiencyCriteria": { "type": "string", "minLength": 1 },
+        "consequenceBasis": { "type": "string", "minLength": 1 }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

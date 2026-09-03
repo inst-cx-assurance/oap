@@ -1,0 +1,11 @@
+{
+  "name": "missing Outcome Auditor evaluation",
+  "expectedCode": "MISSING_AUDITOR_EVALUATION",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/28/auditorEvaluationId",
+      "value": "oap:outcome-auditor-evaluation:MISSING"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/outcome.schema.json",
+  "title": "Declared outcome",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "name",
+        "outcomeObligationId",
+        "requirementIds",
+        "criterionIds",
+        "evidenceNeedId",
+        "authorizationBoundaryIds"
+      ],
+      "properties": {
+        "entityType": { "const": "outcome" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "outcomeObligationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "requirementIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "criterionIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "evidenceNeedId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "authorizationBoundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/change-record.schema.json",
+  "title": "Controlled change record",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "changedRecordId",
+        "priorRecordId",
+        "changedByPartyId",
+        "changedAt",
+        "reason",
+        "reassessmentRequired"
+      ],
+      "properties": {
+        "entityType": { "const": "change-record" },
+        "changedRecordId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "priorRecordId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "changedByPartyId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "changedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "reassessmentRequired": { "type": "boolean" }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

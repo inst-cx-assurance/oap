@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/outcome-evidence-need.schema.json",
+  "title": "Outcome Evidence Need",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "outcomeId",
+        "boundaryIds",
+        "requirementIds",
+        "criterionIds",
+        "determinedBeforeEvidenceGeneration",
+        "evidenceCategories",
+        "sufficiencyCriteria",
+        "acceptableResidualUncertainty",
+        "consequenceBasis"
+      ],
+      "properties": {
+        "entityType": { "const": "outcome-evidence-need" },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "requirementIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "criterionIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "determinedBeforeEvidenceGeneration": { "type": "boolean" },
+        "evidenceCategories": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "sufficiencyCriteria": { "type": "string", "minLength": 1 },
+        "acceptableResidualUncertainty": { "type": "string", "minLength": 1 },
+        "consequenceBasis": { "type": "string", "minLength": 1 }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

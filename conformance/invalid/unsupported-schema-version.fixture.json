@@ -1,0 +1,5 @@
+{
+  "name": "unsupported schema version",
+  "expectedCode": "UNSUPPORTED_SCHEMA_VERSION",
+  "mutations": [{ "op": "replace", "path": "/schemaVersion", "value": "9.0.0" }]
+}

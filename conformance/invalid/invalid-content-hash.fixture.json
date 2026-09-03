@@ -1,0 +1,11 @@
+{
+  "name": "invalid package content hash",
+  "expectedCode": "INVALID_CONTENT_HASH",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/manifest/contentHash/value",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ]
+}

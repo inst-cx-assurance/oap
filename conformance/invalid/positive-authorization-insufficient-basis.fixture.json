@@ -1,0 +1,5 @@
+{
+  "name": "positive authorization contradicts evidence basis",
+  "expectedCode": "AUTHORIZATION_BASIS_CONTRADICTION",
+  "mutations": [{ "op": "replace", "path": "/records/29/decision", "value": "not_accepted" }]
+}

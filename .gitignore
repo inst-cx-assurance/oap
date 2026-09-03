@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+*.zip
+*.log
+.cache/
+.tmp/
+controlled-sources/
+*.key
+*.pem
+.env*

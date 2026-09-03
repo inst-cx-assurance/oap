@@ -1,0 +1,8 @@
+{
+  "name": "authorization predates determination",
+  "expectedCode": "INVALID_CHRONOLOGY",
+  "mutations": [
+    { "op": "replace", "path": "/records/30/authorizedAt", "value": "2026-09-02T11:00:00Z" },
+    { "op": "replace", "path": "/records/30/validFrom", "value": "2026-09-02T11:00:00Z" }
+  ]
+}

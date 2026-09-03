@@ -1,0 +1,5 @@
+{
+  "name": "Outcome Auditor and Outcome Director same person",
+  "expectedCode": "AUDITOR_DIRECTOR_ROLE_CONFLICT",
+  "mutations": [{ "op": "replace", "path": "/records/17/partyId", "value": "oap:party:auditor" }]
+}

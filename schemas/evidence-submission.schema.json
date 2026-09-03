@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/evidence-submission.schema.json",
+  "title": "Evidence-package submission",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
+        "externalPackageReferenceIds",
+        "criterionIds",
+        "submittedByRoleAssignmentId",
+        "submittedAt",
+        "status"
+      ],
+      "properties": {
+        "entityType": { "const": "evidence-submission" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "externalPackageReferenceIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "criterionIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "submittedByRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "submittedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "status": { "enum": ["submitted", "under_review", "superseded"] }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

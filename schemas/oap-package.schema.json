@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/oap-package.schema.json",
+  "title": "OAP v0.1 package",
+  "type": "object",
+  "required": ["$schema", "schemaVersion", "manifest", "records"],
+  "properties": {
+    "$schema": { "const": "https://spec.oap.example/v0.1/schemas/oap-package.schema.json" },
+    "schemaVersion": { "const": "0.1.0" },
+    "manifest": { "$ref": "https://spec.oap.example/v0.1/schemas/package-manifest.schema.json" },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "https://spec.oap.example/v0.1/schemas/party.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/human-identity-reference.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/authority-scope.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/role-assignment.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/delegation.schema.json" },
+          {
+            "$ref": "https://spec.oap.example/v0.1/schemas/conflict-of-interest-declaration.schema.json"
+          },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/project-context.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/outcome-obligation.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/outcome-requirement.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/outcome.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/outcome-criterion.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/outcome-evidence-need.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/authorization-boundary.schema.json" },
+          {
+            "$ref": "https://spec.oap.example/v0.1/schemas/external-package-reference.schema.json"
+          },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/evidence-submission.schema.json" },
+          {
+            "$ref": "https://spec.oap.example/v0.1/schemas/evidence-sufficiency-assessment.schema.json"
+          },
+          {
+            "$ref": "https://spec.oap.example/v0.1/schemas/outcome-auditor-evaluation.schema.json"
+          },
+          {
+            "$ref": "https://spec.oap.example/v0.1/schemas/outcome-director-determination.schema.json"
+          },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/residual-risk-declaration.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/residual-risk-acceptance.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/authorization-condition.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/outcome-authorization.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/authorization-change.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/controlled-explanation.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/profile-declaration.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/extension-declaration.schema.json" },
+          { "$ref": "https://spec.oap.example/v0.1/schemas/change-record.schema.json" }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/role-assignment.schema.json",
+  "title": "Human role assignment",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "partyId",
+        "role",
+        "authorityScopeId",
+        "validFrom",
+        "appointmentBasis",
+        "competenceBasis"
+      ],
+      "properties": {
+        "entityType": { "const": "role-assignment" },
+        "partyId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "role": {
+          "enum": ["evidence_submitter", "outcome_auditor", "outcome_director", "condition_owner"]
+        },
+        "authorityScopeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "validFrom": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "validTo": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "appointmentBasis": { "type": "string", "minLength": 1 },
+        "competenceBasis": { "type": "string", "minLength": 1 },
+        "delegationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

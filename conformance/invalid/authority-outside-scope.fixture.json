@@ -1,0 +1,5 @@
+{
+  "name": "authority outside boundary scope",
+  "expectedCode": "AUTHORITY_OUT_OF_SCOPE",
+  "mutations": [{ "op": "replace", "path": "/records/13/boundaryIds", "value": [] }]
+}

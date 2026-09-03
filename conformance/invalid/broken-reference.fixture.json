@@ -1,0 +1,7 @@
+{
+  "name": "broken typed reference",
+  "expectedCode": "BROKEN_REFERENCE",
+  "mutations": [
+    { "op": "replace", "path": "/records/24/outcomeId", "value": "oap:outcome:MISSING" }
+  ]
+}

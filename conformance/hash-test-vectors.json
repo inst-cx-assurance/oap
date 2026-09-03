@@ -1,0 +1,17 @@
+{
+  "algorithm": "OAP Canonical JSON v0.1",
+  "vectors": [
+    {
+      "name": "sorted keys",
+      "input": { "b": 1, "a": "x" },
+      "canonical": "{\"a\":\"x\",\"b\":1}",
+      "sha256": "cdab067e9f3beb32d1252cfd63e492592fecbf591b0d08cadb24bb17f3864246"
+    },
+    {
+      "name": "UTF-8 nested",
+      "input": { "z": [2, { "b": false, "a": null }], "a": "é" },
+      "canonical": "{\"a\":\"é\",\"z\":[2,{\"a\":null,\"b\":false}]}",
+      "sha256": "b22f45fae69eddcf4f51a274bda4cfd7bfe50552a33c8dd17d5bb9b9a894ac1d"
+    }
+  ]
+}

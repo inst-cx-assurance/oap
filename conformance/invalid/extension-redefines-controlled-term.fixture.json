@@ -1,0 +1,22 @@
+{
+  "name": "extension redefines controlled term",
+  "expectedCode": "CONTROLLED_TERM_REDEFINITION",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "vendor.example:extension:TERM",
+        "entityType": "extension-declaration",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T00:00:00Z",
+        "namespace": "vendor.example",
+        "extensionVersion": "1.0.0",
+        "appliesToEntityTypes": ["outcome-authorization"],
+        "controlledTermOverrides": ["Outcome Authorization"],
+        "authorityControlChanges": [],
+        "automatedAuthority": false
+      }
+    }
+  ]
+}

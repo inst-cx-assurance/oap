@@ -1,0 +1,32 @@
+{
+  "id": "oap:profile:icxa-provisional",
+  "entityType": "profile-declaration",
+  "recordVersion": "1.0.0",
+  "createdAt": "2026-09-02T00:00:00Z",
+  "name": "Provisional ICxA Outcome Assurance mapping",
+  "profileVersion": "0.1.0",
+  "oapVersion": "0.1.0",
+  "status": "provisional_icxa_verification_required",
+  "sourceMappings": [
+    {
+      "source": "ICXA-10000:2026 Rev 0",
+      "clause": "all applicable concepts",
+      "status": "icxa_verification_required"
+    },
+    {
+      "source": "ICXA-10001:2026 Rev 0",
+      "clause": "all applicable shall requirements",
+      "status": "icxa_verification_required"
+    },
+    {
+      "source": "ICXA-10002:2026 Rev 0",
+      "clause": "all applicable shall requirements",
+      "status": "icxa_verification_required"
+    },
+    {
+      "source": "ICXA-10003:2026 Rev 0",
+      "clause": "informative only",
+      "status": "icxa_verification_required"
+    }
+  ]
+}

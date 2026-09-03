@@ -1,0 +1,7 @@
+{
+  "name": "Core authorization reference",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:CONFORMANCE-CORE-AUTHORIZED",
+  "expectedState": "authorized",
+  "mutations": []
+}

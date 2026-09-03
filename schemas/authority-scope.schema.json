@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/authority-scope.schema.json",
+  "title": "Authority scope",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": ["entityType", "projectIds", "outcomeIds", "boundaryIds", "permittedActions"],
+      "properties": {
+        "entityType": { "const": "authority-scope" },
+        "projectIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "outcomeIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "permittedActions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "submit_evidence",
+              "evaluate_evidence",
+              "make_outcome_determination",
+              "accept_residual_risk",
+              "issue_outcome_authorization",
+              "manage_authorization_condition",
+              "withdraw_authorization",
+              "revoke_authorization"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/package-manifest.schema.json",
+  "title": "OAP package manifest",
+  "type": "object",
+  "required": [
+    "packageId",
+    "packageVersion",
+    "manifestVersion",
+    "oapVersion",
+    "createdAt",
+    "producedByPartyId",
+    "projectId",
+    "outcomeIds",
+    "authorizationBoundaryIds",
+    "profiles",
+    "inventory",
+    "qualifications",
+    "exclusions",
+    "contentHash",
+    "canonicalizationMethod"
+  ],
+  "properties": {
+    "packageId": {
+      "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+    },
+    "packageVersion": {
+      "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+    },
+    "manifestVersion": { "const": "0.1.0" },
+    "oapVersion": { "const": "0.1.0" },
+    "createdAt": {
+      "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+    },
+    "producedByPartyId": {
+      "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+    },
+    "projectId": {
+      "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+    },
+    "outcomeIds": {
+      "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+    },
+    "authorizationBoundaryIds": {
+      "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["profileId", "profileVersion"],
+        "properties": {
+          "profileId": {
+            "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+          },
+          "profileVersion": {
+            "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "inventory": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["recordId", "entityType", "recordVersion", "supersessionStatus"],
+        "properties": {
+          "recordId": {
+            "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+          },
+          "entityType": { "type": "string" },
+          "recordVersion": {
+            "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+          },
+          "supersessionStatus": { "enum": ["current", "superseded"] },
+          "supersedesRecordId": {
+            "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "qualifications": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "exclusions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "canonicalizationMethod": { "const": "OAP Canonical JSON v0.1" },
+    "contentHash": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": { "const": "sha256" },
+        "value": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

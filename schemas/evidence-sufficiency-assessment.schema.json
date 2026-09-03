@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/evidence-sufficiency-assessment.schema.json",
+  "title": "Evidence admissibility and sufficiency assessment",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
+        "submissionId",
+        "criterionId",
+        "auditorRoleAssignmentId",
+        "assessedAt",
+        "admissibility",
+        "sufficiency",
+        "credibility",
+        "relevance",
+        "currency",
+        "rationale",
+        "evidencePackageReferenceIds"
+      ],
+      "properties": {
+        "entityType": { "const": "evidence-sufficiency-assessment" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "submissionId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "criterionId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "auditorRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "assessedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "admissibility": { "enum": ["admissible", "inadmissible", "indeterminate"] },
+        "sufficiency": { "enum": ["sufficient", "insufficient", "indeterminate"] },
+        "credibility": { "enum": ["credible", "not_credible", "indeterminate"] },
+        "relevance": { "enum": ["relevant", "not_relevant", "indeterminate"] },
+        "currency": { "enum": ["current", "stale", "indeterminate"] },
+        "rationale": { "type": "string", "minLength": 1 },
+        "evidencePackageReferenceIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

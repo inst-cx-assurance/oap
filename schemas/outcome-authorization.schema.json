@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/outcome-authorization.schema.json",
+  "title": "Human Outcome Authorization",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
+        "determinationId",
+        "auditorEvaluationId",
+        "residualRiskAcceptanceId",
+        "directorRoleAssignmentId",
+        "decision",
+        "authorizedAt",
+        "validFrom",
+        "validTo",
+        "scopeStatement",
+        "evidenceBasisIds",
+        "rationale",
+        "conditionIds",
+        "generationMethod"
+      ],
+      "properties": {
+        "entityType": { "const": "outcome-authorization" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "determinationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "auditorEvaluationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "residualRiskAcceptanceId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "directorRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "decision": {
+          "enum": [
+            "authorized",
+            "authorized_with_conditions",
+            "withheld",
+            "deferred",
+            "not_authorized"
+          ]
+        },
+        "authorizedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "validFrom": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "validTo": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "scopeStatement": { "type": "string", "minLength": 1 },
+        "evidenceBasisIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "conditionIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

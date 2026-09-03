@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/extension-declaration.schema.json",
+  "title": "Extension declaration",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "namespace",
+        "extensionVersion",
+        "appliesToEntityTypes",
+        "controlledTermOverrides",
+        "authorityControlChanges",
+        "automatedAuthority"
+      ],
+      "properties": {
+        "entityType": { "const": "extension-declaration" },
+        "namespace": { "type": "string", "pattern": "^[a-z][a-z0-9.-]*$" },
+        "extensionVersion": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+        },
+        "appliesToEntityTypes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "controlledTermOverrides": { "type": "array", "items": { "type": "string" } },
+        "authorityControlChanges": { "type": "array", "items": { "type": "string" } },
+        "automatedAuthority": { "type": "boolean" }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

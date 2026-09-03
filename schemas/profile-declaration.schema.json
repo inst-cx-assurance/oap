@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/profile-declaration.schema.json",
+  "title": "Profile declaration",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "name",
+        "profileVersion",
+        "oapVersion",
+        "status",
+        "sourceMappings"
+      ],
+      "properties": {
+        "entityType": { "const": "profile-declaration" },
+        "name": { "type": "string", "minLength": 1 },
+        "profileVersion": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
+        },
+        "oapVersion": { "const": "0.1.0" },
+        "status": { "enum": ["draft", "provisional_icxa_verification_required", "approved"] },
+        "sourceMappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["source", "clause", "status"],
+            "properties": {
+              "source": { "type": "string" },
+              "clause": { "type": "string" },
+              "status": {
+                "enum": ["confirmed", "icxa_verification_required", "protocol_integrity_adr"]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

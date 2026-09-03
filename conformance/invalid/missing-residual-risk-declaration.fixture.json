@@ -1,0 +1,11 @@
+{
+  "name": "missing residual-risk declaration",
+  "expectedCode": "MISSING_RESIDUAL_RISK_DECLARATION",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/28/residualRiskDeclarationId",
+      "value": "oap:residual-risk-declaration:MISSING"
+    }
+  ]
+}

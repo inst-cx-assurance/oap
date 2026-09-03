@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/human-identity-reference.schema.json",
+  "title": "Human identity reference",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "partyId",
+        "identitySystem",
+        "subjectReference",
+        "verificationStatus"
+      ],
+      "properties": {
+        "entityType": { "const": "human-identity-reference" },
+        "partyId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "identitySystem": { "type": "string", "minLength": 1 },
+        "subjectReference": { "type": "string", "minLength": 1 },
+        "verificationStatus": { "enum": ["declared", "verified"] }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

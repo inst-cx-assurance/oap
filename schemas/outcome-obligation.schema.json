@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/outcome-obligation.schema.json",
+  "title": "Outcome Obligation",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": ["entityType", "projectId", "statement", "businessBasis", "requirementIds"],
+      "properties": {
+        "entityType": { "const": "outcome-obligation" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "statement": { "type": "string", "minLength": 1 },
+        "businessBasis": { "type": "string", "minLength": 1 },
+        "requirementIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

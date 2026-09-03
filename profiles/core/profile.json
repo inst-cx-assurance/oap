@@ -1,0 +1,13 @@
+{
+  "id": "oap:profile:core",
+  "entityType": "profile-declaration",
+  "recordVersion": "1.0.0",
+  "createdAt": "2026-09-02T00:00:00Z",
+  "name": "OAP Core",
+  "profileVersion": "0.1.0",
+  "oapVersion": "0.1.0",
+  "status": "draft",
+  "sourceMappings": [
+    { "source": "ICXA-10001:2026 Rev 0", "clause": "5.3, 8.2, 8.3", "status": "confirmed" }
+  ]
+}

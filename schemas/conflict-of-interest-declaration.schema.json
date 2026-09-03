@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/conflict-of-interest-declaration.schema.json",
+  "title": "Conflict-of-interest declaration",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": ["entityType", "roleAssignmentId", "declaredAt", "status", "details"],
+      "properties": {
+        "entityType": { "const": "conflict-of-interest-declaration" },
+        "roleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "declaredAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "status": { "enum": ["no_conflict_declared", "mitigated", "unresolved"] },
+        "details": { "type": "string" },
+        "mitigation": { "type": "string" }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

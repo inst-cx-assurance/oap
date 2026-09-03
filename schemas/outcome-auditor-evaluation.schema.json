@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/outcome-auditor-evaluation.schema.json",
+  "title": "Human Outcome Auditor evaluation",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
+        "submissionId",
+        "assessmentIds",
+        "auditorRoleAssignmentId",
+        "evaluatedAt",
+        "conclusion",
+        "evidenceBasisIds",
+        "rationale",
+        "qualifications",
+        "generationMethod"
+      ],
+      "properties": {
+        "entityType": { "const": "outcome-auditor-evaluation" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "submissionId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "assessmentIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "auditorRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "evaluatedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "conclusion": { "enum": ["evidence_sufficient", "evidence_insufficient", "indeterminate"] },
+        "evidenceBasisIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

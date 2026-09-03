@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/residual-risk-acceptance.schema.json",
+  "title": "Human Outcome Director residual-risk acceptance",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
+        "declarationId",
+        "directorRoleAssignmentId",
+        "acceptedAt",
+        "decision",
+        "basis",
+        "generationMethod"
+      ],
+      "properties": {
+        "entityType": { "const": "residual-risk-acceptance" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "declarationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "directorRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "acceptedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "decision": { "enum": ["accepted", "not_accepted", "deferred"] },
+        "basis": { "type": "string", "minLength": 1 }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

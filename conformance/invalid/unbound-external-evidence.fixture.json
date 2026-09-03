@@ -1,0 +1,5 @@
+{
+  "name": "unbound external evidence",
+  "expectedCode": "UNBOUND_EXTERNAL_EVIDENCE",
+  "mutations": [{ "op": "replace", "path": "/records/23/validationStatus", "value": "unverified" }]
+}

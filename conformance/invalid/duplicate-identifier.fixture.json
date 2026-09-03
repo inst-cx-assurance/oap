@@ -1,0 +1,18 @@
+{
+  "name": "duplicate identifiers",
+  "expectedCode": "DUPLICATE_IDENTIFIER",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:party:owner-org",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "name": "Duplicate",
+        "partyType": "organization"
+      }
+    }
+  ]
+}

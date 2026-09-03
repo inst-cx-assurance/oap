@@ -1,0 +1,13 @@
+{
+  "id": "oap:profile:ocrs-input",
+  "entityType": "profile-declaration",
+  "recordVersion": "1.0.0",
+  "createdAt": "2026-09-02T00:00:00Z",
+  "name": "OCRS evidence-input interoperability",
+  "profileVersion": "0.1.0",
+  "oapVersion": "0.1.0",
+  "status": "draft",
+  "sourceMappings": [
+    { "source": "OAP ADR-0003", "clause": "decision", "status": "protocol_integrity_adr" }
+  ]
+}

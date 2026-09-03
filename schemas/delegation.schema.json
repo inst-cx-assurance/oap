@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/delegation.schema.json",
+  "title": "Delegation",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "delegatorRoleAssignmentId",
+        "delegateRoleAssignmentId",
+        "authorityScopeId",
+        "validFrom",
+        "basis"
+      ],
+      "properties": {
+        "entityType": { "const": "delegation" },
+        "delegatorRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "delegateRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "authorityScopeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "validFrom": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "validTo": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "basis": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["active", "withdrawn", "expired"] }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Scenario B - evidence insufficient",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:ALPHA-EVIDENCE-INSUFFICIENT",
+  "expectedState": "withheld",
+  "mutations": [
+    { "op": "replace", "path": "/records/25/sufficiency", "value": "insufficient" },
+    { "op": "replace", "path": "/records/25/currency", "value": "stale" },
+    { "op": "replace", "path": "/records/26/conclusion", "value": "evidence_insufficient" },
+    {
+      "op": "replace",
+      "path": "/records/28/determination",
+      "value": "does_not_support_authorization"
+    },
+    { "op": "replace", "path": "/records/29/decision", "value": "not_accepted" },
+    { "op": "replace", "path": "/records/30/decision", "value": "withheld" },
+    {
+      "op": "replace",
+      "path": "/records/30/rationale",
+      "value": "Human Outcome Director withholds authorization because the Auditor found the evidence insufficient."
+    }
+  ]
+}

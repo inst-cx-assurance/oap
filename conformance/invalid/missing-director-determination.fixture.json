@@ -1,0 +1,11 @@
+{
+  "name": "missing Outcome Director determination",
+  "expectedCode": "MISSING_DIRECTOR_DETERMINATION",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/30/determinationId",
+      "value": "oap:outcome-director-determination:MISSING"
+    }
+  ]
+}

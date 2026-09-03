@@ -1,0 +1,5 @@
+{
+  "name": "authorization context differs from determination",
+  "expectedCode": "AUTHORIZATION_DETERMINATION_MISMATCH",
+  "mutations": [{ "op": "replace", "path": "/records/30/boundaryIds", "value": [] }]
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/authorization-change.schema.json",
+  "title": "Authorization withdrawal, revocation, expiry or reassessment trigger",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "authorizationId",
+        "changedByRoleAssignmentId",
+        "changedAt",
+        "changeType",
+        "basis"
+      ],
+      "properties": {
+        "entityType": { "const": "authorization-change" },
+        "authorizationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "changedByRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "changedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "changeType": {
+          "enum": ["withdrawn", "revoked", "expired", "superseded", "reassessment_required"]
+        },
+        "basis": { "type": "string", "minLength": 1 },
+        "replacementAuthorizationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Evidence submitter and Outcome Auditor are the same person",
+  "expectedCode": "EVIDENCE_EVALUATION_ROLE_CONFLICT",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/16/partyId",
+      "value": "oap:party:submitter"
+    }
+  ]
+}

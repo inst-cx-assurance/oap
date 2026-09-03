@@ -1,0 +1,23 @@
+{
+  "name": "condition missing owner and controls",
+  "expectedCode": "CONDITION_INCOMPLETE",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-condition:BAD",
+        "entityType": "authorization-condition",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T12:09:00Z",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "requiredAction": "Incomplete",
+        "verificationCriteria": "Incomplete",
+        "status": "open",
+        "sourceRecordIds": ["oap:director-determination:ALPHA-1"]
+      }
+    }
+  ]
+}

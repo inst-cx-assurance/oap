@@ -1,0 +1,5 @@
+{
+  "name": "external package hash mismatch",
+  "expectedCode": "EXTERNAL_PACKAGE_HASH_MISMATCH",
+  "mutations": [{ "op": "replace", "path": "/records/23/validationStatus", "value": "failed" }]
+}

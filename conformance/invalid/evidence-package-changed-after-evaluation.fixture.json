@@ -1,0 +1,7 @@
+{
+  "name": "evidence package changed after evaluation",
+  "expectedCode": "EVIDENCE_PACKAGE_CHANGED_AFTER_EVALUATION",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/createdAtSource", "value": "2026-09-03T00:00:00Z" }
+  ]
+}

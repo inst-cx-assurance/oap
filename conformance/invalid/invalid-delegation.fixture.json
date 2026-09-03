@@ -1,0 +1,22 @@
+{
+  "name": "delegation changes role",
+  "expectedCode": "INVALID_DELEGATION",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:delegation:BAD",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-01T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:auditor",
+        "authorityScopeId": "oap:authority-scope:director",
+        "validFrom": "2026-09-01T00:00:00Z",
+        "basis": "Invalid cross-role delegation",
+        "status": "active"
+      }
+    }
+  ]
+}

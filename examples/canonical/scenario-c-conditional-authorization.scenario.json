@@ -1,0 +1,80 @@
+{
+  "name": "Scenario C - conditional authorization",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:ALPHA-CONDITIONAL",
+  "expectedState": "authorized_with_conditions",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authority-scope:condition",
+        "entityType": "authority-scope",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "projectIds": ["oap:project:ALPHA"],
+        "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "permittedActions": ["manage_authorization_condition"]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:role-assignment:condition-owner",
+        "entityType": "role-assignment",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "partyId": "oap:party:director",
+        "role": "condition_owner",
+        "authorityScopeId": "oap:authority-scope:condition",
+        "validFrom": "2026-08-01T00:00:00Z",
+        "validTo": "2026-12-31T23:59:59Z",
+        "appointmentBasis": "Fictional condition ownership",
+        "competenceBasis": "Fictional monitoring competence"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/33",
+      "value": {
+        "id": "oap:conflict:condition-owner",
+        "entityType": "conflict-of-interest-declaration",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "roleAssignmentId": "oap:role-assignment:condition-owner",
+        "declaredAt": "2026-08-01T00:00:00Z",
+        "status": "no_conflict_declared",
+        "details": "Condition ownership disclosed."
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/34",
+      "value": {
+        "id": "oap:authorization-condition:MONITOR-1",
+        "entityType": "authorization-condition",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T12:09:00Z",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "ownerRoleAssignmentId": "oap:role-assignment:condition-owner",
+        "requiredAction": "Complete fourteen days of early-life monitoring.",
+        "dueDate": "2026-09-16T23:59:59Z",
+        "monitoringRequirements": "Record daily operating exceptions.",
+        "escalationRequirements": "Escalate any safety or material reliability deviation immediately.",
+        "verificationCriteria": "Owner verifies the monitoring record and closes all material deviations.",
+        "status": "open",
+        "sourceRecordIds": ["oap:director-determination:ALPHA-1"]
+      }
+    },
+    { "op": "replace", "path": "/records/30/decision", "value": "authorized_with_conditions" },
+    {
+      "op": "replace",
+      "path": "/records/30/conditionIds",
+      "value": ["oap:authorization-condition:MONITOR-1"]
+    }
+  ]
+}

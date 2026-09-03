@@ -1,0 +1,21 @@
+{
+  "name": "withdrawn authorization treated as active",
+  "expectedCode": "WITHDRAWN_AUTHORIZATION_ACTIVE",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-change:WITHDRAW",
+        "entityType": "authorization-change",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-03T00:00:00Z",
+        "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "changedByRoleAssignmentId": "oap:role-assignment:director",
+        "changedAt": "2026-09-03T00:00:00Z",
+        "changeType": "withdrawn",
+        "basis": "Fictional withdrawal"
+      }
+    }
+  ]
+}

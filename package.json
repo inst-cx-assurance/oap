@@ -1,0 +1,37 @@
+{
+  "name": "oap-reference",
+  "version": "0.1.0-draft",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0 <23 || >=24.0.0 <25"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings 0",
+    "build": "tsc -p tsconfig.json",
+    "validate:schemas": "node --import tsx src/cli.ts schemas",
+    "validate:valid": "node --import tsx src/cli.ts valid",
+    "validate:invalid": "node --import tsx src/cli.ts invalid",
+    "validate:semantic": "node --import tsx src/cli.ts semantic",
+    "verify:ocrs": "node --import tsx src/cli.ts verify-ocrs",
+    "test": "vitest run",
+    "conformance": "npm run format:check && npm run lint && npm run build && npm run validate:schemas && npm run validate:valid && npm run validate:invalid && npm run validate:semantic && npm test && npm run verify:ocrs",
+    "audit:dependencies": "npm audit"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.1",
+    "@typescript-eslint/eslint-plugin": "8.69.0",
+    "@typescript-eslint/parser": "8.69.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "10.9.1",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.6",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  }
+}

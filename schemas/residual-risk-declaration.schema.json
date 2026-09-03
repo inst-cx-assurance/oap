@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/residual-risk-declaration.schema.json",
+  "title": "Residual-risk declaration",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
+        "submissionId",
+        "declaredByRoleAssignmentId",
+        "declaredAt",
+        "riskItems",
+        "residualUncertainty"
+      ],
+      "properties": {
+        "entityType": { "const": "residual-risk-declaration" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "submissionId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "declaredByRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "declaredAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "riskItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "riskId",
+              "description",
+              "consequence",
+              "uncertainty",
+              "treatment",
+              "ownerPartyId"
+            ],
+            "properties": {
+              "riskId": { "type": "string", "minLength": 1 },
+              "description": { "type": "string", "minLength": 1 },
+              "consequence": { "type": "string", "minLength": 1 },
+              "uncertainty": { "type": "string", "minLength": 1 },
+              "treatment": { "type": "string", "minLength": 1 },
+              "ownerPartyId": {
+                "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "residualUncertainty": { "type": "string", "minLength": 1 }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

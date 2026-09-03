@@ -1,0 +1,7 @@
+{
+  "name": "unsupported profile version",
+  "expectedCode": "UNSUPPORTED_PROFILE_VERSION",
+  "mutations": [
+    { "op": "replace", "path": "/manifest/profiles/0/profileVersion", "value": "9.0.0" }
+  ]
+}

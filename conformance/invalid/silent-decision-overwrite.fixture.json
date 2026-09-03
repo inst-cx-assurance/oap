@@ -1,0 +1,32 @@
+{
+  "name": "silent authorization overwrite",
+  "expectedCode": "SILENT_DECISION_OVERWRITE",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:outcome-authorization:ALPHA-2",
+        "entityType": "outcome-authorization",
+        "recordVersion": "2.0.0",
+        "createdAt": "2026-09-02T13:00:00Z",
+        "generationMethod": "human_supplied",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "determinationId": "oap:director-determination:ALPHA-1",
+        "auditorEvaluationId": "oap:auditor-evaluation:ALPHA-1",
+        "residualRiskAcceptanceId": "oap:residual-risk-acceptance:ALPHA-1",
+        "directorRoleAssignmentId": "oap:role-assignment:director",
+        "decision": "authorized",
+        "authorizedAt": "2026-09-02T13:00:00Z",
+        "validFrom": "2026-09-02T13:00:00Z",
+        "validTo": "2026-12-31T23:59:59Z",
+        "scopeStatement": "Conflicting current authorization",
+        "evidenceBasisIds": ["oap:director-determination:ALPHA-1"],
+        "rationale": "Invalid overwrite without supersession",
+        "conditionIds": []
+      }
+    }
+  ]
+}

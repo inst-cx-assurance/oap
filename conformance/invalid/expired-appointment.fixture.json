@@ -1,0 +1,5 @@
+{
+  "name": "Outcome Auditor appointment expired",
+  "expectedCode": "EXPIRED_APPOINTMENT",
+  "mutations": [{ "op": "replace", "path": "/records/16/validTo", "value": "2026-09-01T00:00:00Z" }]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "unsafe external reference",
+  "expectedCode": "UNSAFE_EXTERNAL_REFERENCE",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/retrievalReference", "value": "file:///../../secret" }
+  ]
+}

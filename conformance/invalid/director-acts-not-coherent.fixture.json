@@ -1,0 +1,11 @@
+{
+  "name": "different Director assignments perform linked acts",
+  "expectedCode": "DIRECTOR_ACTS_NOT_COHERENT",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/29/directorRoleAssignmentId",
+      "value": "oap:role-assignment:auditor"
+    }
+  ]
+}

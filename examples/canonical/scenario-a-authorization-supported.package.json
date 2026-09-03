@@ -1,0 +1,640 @@
+{
+  "$schema": "https://spec.oap.example/v0.1/schemas/oap-package.schema.json",
+  "schemaVersion": "0.1.0",
+  "manifest": {
+    "packageId": "oap:package:ALPHA-AUTHORIZED",
+    "packageVersion": "0.1.0",
+    "manifestVersion": "0.1.0",
+    "oapVersion": "0.1.0",
+    "createdAt": "2026-09-02T15:00:00Z",
+    "producedByPartyId": "oap:party:owner-org",
+    "projectId": "oap:project:ALPHA",
+    "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+    "authorizationBoundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+    "profiles": [
+      { "profileId": "oap:profile:core", "profileVersion": "0.1.0" },
+      { "profileId": "oap:profile:ocrs-input", "profileVersion": "0.1.0" }
+    ],
+    "inventory": [
+      {
+        "recordId": "oap:party:owner-org",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:party:delivery-org",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:party:submitter",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:party:auditor",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:party:director",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:project:ALPHA",
+        "entityType": "project-context",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:obligation:ALPHA-TOC",
+        "entityType": "outcome-obligation",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:outcome:ALPHA-TOC",
+        "entityType": "outcome",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:outcome-requirement:ALPHA-READY",
+        "entityType": "outcome-requirement",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:outcome-criterion:ALPHA-EVIDENCE",
+        "entityType": "outcome-criterion",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:authorization-boundary:ALPHA-CW101",
+        "entityType": "authorization-boundary",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:outcome-evidence-need:ALPHA-TOC",
+        "entityType": "outcome-evidence-need",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:authority-scope:submit",
+        "entityType": "authority-scope",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:authority-scope:audit",
+        "entityType": "authority-scope",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:authority-scope:director",
+        "entityType": "authority-scope",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:role-assignment:submitter",
+        "entityType": "role-assignment",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:role-assignment:auditor",
+        "entityType": "role-assignment",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:role-assignment:director",
+        "entityType": "role-assignment",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:conflict:submitter",
+        "entityType": "conflict-of-interest-declaration",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:conflict:auditor",
+        "entityType": "conflict-of-interest-declaration",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:conflict:director",
+        "entityType": "conflict-of-interest-declaration",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:profile:core",
+        "entityType": "profile-declaration",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:profile:ocrs-input",
+        "entityType": "profile-declaration",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:external-package:CW101-RFDC",
+        "entityType": "external-package-reference",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:evidence-submission:ALPHA-1",
+        "entityType": "evidence-submission",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:sufficiency-assessment:ALPHA-1",
+        "entityType": "evidence-sufficiency-assessment",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:auditor-evaluation:ALPHA-1",
+        "entityType": "outcome-auditor-evaluation",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:residual-risk-declaration:ALPHA-1",
+        "entityType": "residual-risk-declaration",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:director-determination:ALPHA-1",
+        "entityType": "outcome-director-determination",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:residual-risk-acceptance:ALPHA-1",
+        "entityType": "residual-risk-acceptance",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      },
+      {
+        "recordId": "oap:outcome-authorization:ALPHA-1",
+        "entityType": "outcome-authorization",
+        "recordVersion": "1.0.0",
+        "supersessionStatus": "current"
+      }
+    ],
+    "qualifications": [
+      "Fictional demonstration; source truth and human competence are not established by this package."
+    ],
+    "exclusions": ["No ICxA profile-conformance or certification claim."],
+    "canonicalizationMethod": "OAP Canonical JSON v0.1",
+    "contentHash": {
+      "algorithm": "sha256",
+      "value": "2621db1844f8d0f1e0a65fa835f2e69d8930b5ff0d1cc39ea7de27aefad587e6"
+    }
+  },
+  "records": [
+    {
+      "id": "oap:party:owner-org",
+      "entityType": "party",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "Alpha Owner Organization",
+      "partyType": "organization"
+    },
+    {
+      "id": "oap:party:delivery-org",
+      "entityType": "party",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "Alpha Delivery Organization",
+      "partyType": "organization"
+    },
+    {
+      "id": "oap:party:submitter",
+      "entityType": "party",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "Evidence Submitter",
+      "partyType": "person",
+      "organizationId": "oap:party:delivery-org"
+    },
+    {
+      "id": "oap:party:auditor",
+      "entityType": "party",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "Outcome Auditor",
+      "partyType": "person"
+    },
+    {
+      "id": "oap:party:director",
+      "entityType": "party",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "Outcome Director",
+      "partyType": "person",
+      "organizationId": "oap:party:owner-org"
+    },
+    {
+      "id": "oap:project:ALPHA",
+      "entityType": "project-context",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "Alpha Cooling Water Transition",
+      "lifecycleContext": "Transfer of operational control outcome"
+    },
+    {
+      "id": "oap:obligation:ALPHA-TOC",
+      "entityType": "outcome-obligation",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "projectId": "oap:project:ALPHA",
+      "statement": "The owner requires a governed decision before assuming the declared operating boundary.",
+      "businessBasis": "Operational risk and accountability transfer",
+      "requirementIds": ["oap:outcome-requirement:ALPHA-READY"]
+    },
+    {
+      "id": "oap:outcome:ALPHA-TOC",
+      "entityType": "outcome",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "projectId": "oap:project:ALPHA",
+      "name": "CW-101 operational-control outcome",
+      "outcomeObligationId": "oap:obligation:ALPHA-TOC",
+      "requirementIds": ["oap:outcome-requirement:ALPHA-READY"],
+      "criterionIds": ["oap:outcome-criterion:ALPHA-EVIDENCE"],
+      "evidenceNeedId": "oap:outcome-evidence-need:ALPHA-TOC",
+      "authorizationBoundaryIds": ["oap:authorization-boundary:ALPHA-CW101"]
+    },
+    {
+      "id": "oap:outcome-requirement:ALPHA-READY",
+      "entityType": "outcome-requirement",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "obligationId": "oap:obligation:ALPHA-TOC",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "statement": "The declared boundary has decision-relevant Level 2 evidence and controlled residual risk.",
+      "criterionIds": ["oap:outcome-criterion:ALPHA-EVIDENCE"]
+    },
+    {
+      "id": "oap:outcome-criterion:ALPHA-EVIDENCE",
+      "entityType": "outcome-criterion",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "statement": "The exact submitted Level 2 package is relevant, credible, current, and sufficient for the outcome.",
+      "evidenceNeed": "Integrity-bound Level 2 package and declared residual risk",
+      "sufficiencyCriteria": "Independent Auditor concludes evidence is sufficient, credible, current, and relevant.",
+      "consequenceBasis": "Incorrect authorization could transfer operational risk without a sound basis."
+    },
+    {
+      "id": "oap:authorization-boundary:ALPHA-CW101",
+      "entityType": "authorization-boundary",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "name": "CW-101 authorization boundary",
+      "subjectIds": ["ocrs:system:CW-101"],
+      "externalBoundaryIds": ["ocrs:boundary:CW-101-SYSTEM", "ocrs:boundary:CW-101-RFDC"],
+      "scopeStatement": "Only the declared CW-101 system and listed OCRS boundaries."
+    },
+    {
+      "id": "oap:outcome-evidence-need:ALPHA-TOC",
+      "entityType": "outcome-evidence-need",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "requirementIds": ["oap:outcome-requirement:ALPHA-READY"],
+      "criterionIds": ["oap:outcome-criterion:ALPHA-EVIDENCE"],
+      "determinedBeforeEvidenceGeneration": true,
+      "evidenceCategories": [
+        "Level 2 execution and readiness evidence",
+        "residual-risk information"
+      ],
+      "sufficiencyCriteria": "Evidence is outcome-specific, traceable, current, credible, relevant, and independently evaluated.",
+      "acceptableResidualUncertainty": "Only explicitly declared uncertainty considered by the Outcome Director.",
+      "consequenceBasis": "Operational-control transition carries material risk."
+    },
+    {
+      "id": "oap:authority-scope:submit",
+      "entityType": "authority-scope",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "projectIds": ["oap:project:ALPHA"],
+      "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "permittedActions": ["submit_evidence"]
+    },
+    {
+      "id": "oap:authority-scope:audit",
+      "entityType": "authority-scope",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "projectIds": ["oap:project:ALPHA"],
+      "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "permittedActions": ["evaluate_evidence"]
+    },
+    {
+      "id": "oap:authority-scope:director",
+      "entityType": "authority-scope",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "projectIds": ["oap:project:ALPHA"],
+      "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "permittedActions": [
+        "make_outcome_determination",
+        "accept_residual_risk",
+        "issue_outcome_authorization",
+        "withdraw_authorization",
+        "revoke_authorization"
+      ]
+    },
+    {
+      "id": "oap:role-assignment:submitter",
+      "entityType": "role-assignment",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "partyId": "oap:party:submitter",
+      "role": "evidence_submitter",
+      "authorityScopeId": "oap:authority-scope:submit",
+      "validFrom": "2026-08-01T00:00:00Z",
+      "validTo": "2026-12-31T23:59:59Z",
+      "appointmentBasis": "Fictional project appointment",
+      "competenceBasis": "Fictional evidence-control competency record"
+    },
+    {
+      "id": "oap:role-assignment:auditor",
+      "entityType": "role-assignment",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "partyId": "oap:party:auditor",
+      "role": "outcome_auditor",
+      "authorityScopeId": "oap:authority-scope:audit",
+      "validFrom": "2026-08-01T00:00:00Z",
+      "validTo": "2026-12-31T23:59:59Z",
+      "appointmentBasis": "Fictional independent appointment",
+      "competenceBasis": "Fictional competence and independence record"
+    },
+    {
+      "id": "oap:role-assignment:director",
+      "entityType": "role-assignment",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "partyId": "oap:party:director",
+      "role": "outcome_director",
+      "authorityScopeId": "oap:authority-scope:director",
+      "validFrom": "2026-08-01T00:00:00Z",
+      "validTo": "2026-12-31T23:59:59Z",
+      "appointmentBasis": "Fictional accountable-owner appointment",
+      "competenceBasis": "Fictional documented competence basis"
+    },
+    {
+      "id": "oap:conflict:submitter",
+      "entityType": "conflict-of-interest-declaration",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "roleAssignmentId": "oap:role-assignment:submitter",
+      "declaredAt": "2026-08-01T00:00:00Z",
+      "status": "no_conflict_declared",
+      "details": "Delivery evidence role disclosed."
+    },
+    {
+      "id": "oap:conflict:auditor",
+      "entityType": "conflict-of-interest-declaration",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "roleAssignmentId": "oap:role-assignment:auditor",
+      "declaredAt": "2026-08-01T00:00:00Z",
+      "status": "no_conflict_declared",
+      "details": "No delivery or Director role declared."
+    },
+    {
+      "id": "oap:conflict:director",
+      "entityType": "conflict-of-interest-declaration",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "roleAssignmentId": "oap:role-assignment:director",
+      "declaredAt": "2026-08-01T00:00:00Z",
+      "status": "no_conflict_declared",
+      "details": "Accountability role declared separately from audit."
+    },
+    {
+      "id": "oap:profile:core",
+      "entityType": "profile-declaration",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "OAP Core",
+      "profileVersion": "0.1.0",
+      "oapVersion": "0.1.0",
+      "status": "draft",
+      "sourceMappings": [
+        { "source": "ICXA-10001:2026 Rev 0", "clause": "5.3, 8.2, 8.3", "status": "confirmed" }
+      ]
+    },
+    {
+      "id": "oap:profile:ocrs-input",
+      "entityType": "profile-declaration",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "name": "OCRS evidence-input interoperability",
+      "profileVersion": "0.1.0",
+      "oapVersion": "0.1.0",
+      "status": "draft",
+      "sourceMappings": [
+        { "source": "OAP ADR-0003", "clause": "decision", "status": "protocol_integrity_adr" }
+      ]
+    },
+    {
+      "id": "oap:external-package:CW101-RFDC",
+      "entityType": "external-package-reference",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-01T18:00:00Z",
+      "sourceProtocolId": "OCRS",
+      "sourceProtocolVersion": "0.1.0",
+      "sourceProfileId": "ocrs:profile:rfdc",
+      "sourceProfileVersion": "0.1.0",
+      "packageId": "ocrs:package:CW-101-RFDC-READY",
+      "packageVersion": "0.1.0",
+      "manifestVersion": "0.1.0",
+      "contentHash": {
+        "algorithm": "sha256",
+        "value": "f68b7e5ed934330633919534ea6e074582d1e9b6edf14482efdec8960b5fb7d2"
+      },
+      "canonicalizationMethod": "OCRS Canonical JSON v0.1",
+      "projectIdentifier": "ocrs:project:CW-101",
+      "subjectIdentifiers": ["ocrs:system:CW-101"],
+      "boundaryIdentifiers": ["ocrs:boundary:CW-101-SYSTEM", "ocrs:boundary:CW-101-RFDC"],
+      "createdAtSource": "2026-09-01T18:00:00Z",
+      "producingParty": "ocrs:party:commissioning-team",
+      "qualifications": ["OCRS satisfied result is evidence input only."],
+      "exclusions": ["No Level 1 authority is conveyed."],
+      "retrievalReference": "urn:example:ocrs:CW-101-RFDC-READY",
+      "custodyStatement": "Fictional controlled evidence repository",
+      "validationStatus": "verified",
+      "inventoryDigest": {
+        "algorithm": "sha256",
+        "value": "13a5c95ccfe6f1d55b1505a8bce34d2b527029a0fcfe2a2aaf13f0fa9e09a756"
+      },
+      "supersessionStatus": "current"
+    },
+    {
+      "id": "oap:evidence-submission:ALPHA-1",
+      "entityType": "evidence-submission",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-02T10:00:00Z",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "externalPackageReferenceIds": ["oap:external-package:CW101-RFDC"],
+      "criterionIds": ["oap:outcome-criterion:ALPHA-EVIDENCE"],
+      "submittedByRoleAssignmentId": "oap:role-assignment:submitter",
+      "submittedAt": "2026-09-02T10:00:00Z",
+      "status": "under_review"
+    },
+    {
+      "id": "oap:sufficiency-assessment:ALPHA-1",
+      "entityType": "evidence-sufficiency-assessment",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-02T11:00:00Z",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "submissionId": "oap:evidence-submission:ALPHA-1",
+      "criterionId": "oap:outcome-criterion:ALPHA-EVIDENCE",
+      "auditorRoleAssignmentId": "oap:role-assignment:auditor",
+      "assessedAt": "2026-09-02T11:00:00Z",
+      "admissibility": "admissible",
+      "sufficiency": "sufficient",
+      "credibility": "credible",
+      "relevance": "relevant",
+      "currency": "current",
+      "rationale": "Fictional human assessment against the declared evidence need.",
+      "evidencePackageReferenceIds": ["oap:external-package:CW101-RFDC"]
+    },
+    {
+      "id": "oap:auditor-evaluation:ALPHA-1",
+      "entityType": "outcome-auditor-evaluation",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-02T11:15:00Z",
+      "generationMethod": "human_supplied",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "submissionId": "oap:evidence-submission:ALPHA-1",
+      "assessmentIds": ["oap:sufficiency-assessment:ALPHA-1"],
+      "auditorRoleAssignmentId": "oap:role-assignment:auditor",
+      "evaluatedAt": "2026-09-02T11:15:00Z",
+      "conclusion": "evidence_sufficient",
+      "evidenceBasisIds": ["oap:external-package:CW101-RFDC", "oap:sufficiency-assessment:ALPHA-1"],
+      "rationale": "Independent fictional evaluation supports evidence sufficiency.",
+      "qualifications": ["Does not authorize the outcome."]
+    },
+    {
+      "id": "oap:residual-risk-declaration:ALPHA-1",
+      "entityType": "residual-risk-declaration",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-02T10:30:00Z",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "submissionId": "oap:evidence-submission:ALPHA-1",
+      "declaredByRoleAssignmentId": "oap:role-assignment:submitter",
+      "declaredAt": "2026-09-02T10:30:00Z",
+      "riskItems": [
+        {
+          "riskId": "R-1",
+          "description": "Minor post-transfer monitoring item",
+          "consequence": "Reduced early-life reliability visibility",
+          "uncertainty": "Low",
+          "treatment": "Daily monitoring for fourteen days",
+          "ownerPartyId": "oap:party:owner-org"
+        }
+      ],
+      "residualUncertainty": "Performance under extended operation remains subject to monitoring."
+    },
+    {
+      "id": "oap:director-determination:ALPHA-1",
+      "entityType": "outcome-director-determination",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-02T12:00:00Z",
+      "generationMethod": "human_supplied",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "auditorEvaluationId": "oap:auditor-evaluation:ALPHA-1",
+      "directorRoleAssignmentId": "oap:role-assignment:director",
+      "determinedAt": "2026-09-02T12:00:00Z",
+      "determination": "supports_authorization",
+      "evidenceBasisIds": ["oap:evidence-submission:ALPHA-1", "oap:auditor-evaluation:ALPHA-1"],
+      "residualRiskDeclarationId": "oap:residual-risk-declaration:ALPHA-1",
+      "rationale": "Fictional human determination after considering the independent evaluation and residual risk."
+    },
+    {
+      "id": "oap:residual-risk-acceptance:ALPHA-1",
+      "entityType": "residual-risk-acceptance",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-02T12:05:00Z",
+      "generationMethod": "human_supplied",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "declarationId": "oap:residual-risk-declaration:ALPHA-1",
+      "directorRoleAssignmentId": "oap:role-assignment:director",
+      "acceptedAt": "2026-09-02T12:05:00Z",
+      "decision": "accepted",
+      "basis": "Fictional Outcome Director accepts the declared residual risk within the supplied authority scope."
+    },
+    {
+      "id": "oap:outcome-authorization:ALPHA-1",
+      "entityType": "outcome-authorization",
+      "recordVersion": "1.0.0",
+      "createdAt": "2026-09-02T12:10:00Z",
+      "generationMethod": "human_supplied",
+      "projectId": "oap:project:ALPHA",
+      "outcomeId": "oap:outcome:ALPHA-TOC",
+      "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+      "determinationId": "oap:director-determination:ALPHA-1",
+      "auditorEvaluationId": "oap:auditor-evaluation:ALPHA-1",
+      "residualRiskAcceptanceId": "oap:residual-risk-acceptance:ALPHA-1",
+      "directorRoleAssignmentId": "oap:role-assignment:director",
+      "decision": "authorized",
+      "authorizedAt": "2026-09-02T12:10:00Z",
+      "validFrom": "2026-09-02T12:10:00Z",
+      "validTo": "2026-12-31T23:59:59Z",
+      "scopeStatement": "Authorization applies only to the declared outcome and boundary.",
+      "evidenceBasisIds": [
+        "oap:external-package:CW101-RFDC",
+        "oap:auditor-evaluation:ALPHA-1",
+        "oap:director-determination:ALPHA-1",
+        "oap:residual-risk-acceptance:ALPHA-1"
+      ],
+      "rationale": "Fictional authorized human decision.",
+      "conditionIds": []
+    }
+  ]
+}

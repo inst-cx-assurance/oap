@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/party.schema.json",
+  "title": "Party",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": ["entityType", "name", "partyType"],
+      "properties": {
+        "entityType": { "const": "party" },
+        "name": { "type": "string", "minLength": 1 },
+        "partyType": { "enum": ["person", "organization", "software"] },
+        "organizationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,11 @@
+{
+  "name": "OCRS readiness recommendation treated as determination",
+  "expectedCode": "OCRS_RECOMMENDATION_TREATED_AS_DETERMINATION",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/28/auditorEvaluationId",
+      "value": "oap:external-package:CW101-RFDC"
+    }
+  ]
+}

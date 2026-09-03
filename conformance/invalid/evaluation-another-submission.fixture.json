@@ -1,0 +1,11 @@
+{
+  "name": "evaluation assessment belongs to another submission",
+  "expectedCode": "EVALUATION_SUBMISSION_MISMATCH",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/25/submissionId",
+      "value": "oap:evidence-submission:MISSING"
+    }
+  ]
+}

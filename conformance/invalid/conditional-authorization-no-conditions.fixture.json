@@ -1,0 +1,7 @@
+{
+  "name": "conditional authorization without conditions",
+  "expectedCode": "CONDITIONAL_AUTHORIZATION_NO_CONDITIONS",
+  "mutations": [
+    { "op": "replace", "path": "/records/30/decision", "value": "authorized_with_conditions" }
+  ]
+}

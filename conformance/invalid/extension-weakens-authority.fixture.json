@@ -1,0 +1,22 @@
+{
+  "name": "extension weakens authority controls",
+  "expectedCode": "EXTENSION_WEAKENS_AUTHORITY",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "vendor.example:extension:AUTO",
+        "entityType": "extension-declaration",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T00:00:00Z",
+        "namespace": "vendor.example",
+        "extensionVersion": "1.0.0",
+        "appliesToEntityTypes": ["outcome-authorization"],
+        "controlledTermOverrides": [],
+        "authorityControlChanges": ["remove Outcome Director"],
+        "automatedAuthority": true
+      }
+    }
+  ]
+}

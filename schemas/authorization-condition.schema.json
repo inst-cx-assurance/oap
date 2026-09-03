@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.oap.example/v0.1/schemas/authorization-condition.schema.json",
+  "title": "Authorization condition",
+  "allOf": [
+    { "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json" },
+    {
+      "type": "object",
+      "required": [
+        "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
+        "ownerRoleAssignmentId",
+        "requiredAction",
+        "dueDate",
+        "monitoringRequirements",
+        "escalationRequirements",
+        "verificationCriteria",
+        "status",
+        "sourceRecordIds"
+      ],
+      "properties": {
+        "entityType": { "const": "authorization-condition" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "ownerRoleAssignmentId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "requiredAction": { "type": "string", "minLength": 1 },
+        "dueDate": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
+        "monitoringRequirements": { "type": "string", "minLength": 1 },
+        "escalationRequirements": { "type": "string", "minLength": 1 },
+        "verificationCriteria": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["open", "verified_closed", "cancelled", "superseded"] },
+        "sourceRecordIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        },
+        "authorizationId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "closureEvidencePackageReferenceIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false
+}

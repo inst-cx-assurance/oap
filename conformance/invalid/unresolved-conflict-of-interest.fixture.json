@@ -1,0 +1,5 @@
+{
+  "name": "unresolved conflict of interest",
+  "expectedCode": "UNRESOLVED_CONFLICT_OF_INTEREST",
+  "mutations": [{ "op": "replace", "path": "/records/19/status", "value": "unresolved" }]
+}

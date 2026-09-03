@@ -1,0 +1,5 @@
+{
+  "name": "authorization outside validity period",
+  "expectedCode": "AUTHORIZATION_OUTSIDE_VALIDITY",
+  "mutations": [{ "op": "replace", "path": "/records/30/validTo", "value": "2026-09-01T00:00:00Z" }]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "wrong-type reference",
+  "expectedCode": "WRONG_ENTITY_TYPE_REFERENCE",
+  "mutations": [
+    { "op": "replace", "path": "/records/24/outcomeId", "value": "oap:party:owner-org" }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "extension uses reserved namespace",
+  "expectedCode": "RESERVED_EXTENSION_NAMESPACE",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "vendor.example:extension:RESERVED",
+        "entityType": "extension-declaration",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T00:00:00Z",
+        "namespace": "oap",
+        "extensionVersion": "1.0.0",
+        "appliesToEntityTypes": [],
+        "controlledTermOverrides": [],
+        "authorityControlChanges": [],
+        "automatedAuthority": false
+      }
+    }
+  ]
+}

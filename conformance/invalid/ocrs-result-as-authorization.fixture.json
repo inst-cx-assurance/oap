@@ -1,0 +1,11 @@
+{
+  "name": "OCRS result treated as Outcome Authorization",
+  "expectedCode": "OCRS_RESULT_TREATED_AS_AUTHORIZATION",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/30/determinationId",
+      "value": "oap:external-package:CW101-RFDC"
+    }
+  ]
+}
