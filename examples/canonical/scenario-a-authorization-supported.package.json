@@ -210,7 +210,7 @@
     "canonicalizationMethod": "OAP Canonical JSON v0.1",
     "contentHash": {
       "algorithm": "sha256",
-      "value": "2621db1844f8d0f1e0a65fa835f2e69d8930b5ff0d1cc39ea7de27aefad587e6"
+      "value": "a1feae7982c607164d87d6b0d2567fa4e0613ff7e59ab13bd471e944ab1b9877"
     }
   },
   "records": [
@@ -479,7 +479,7 @@
       "sourceProfileId": "ocrs:profile:rfdc",
       "sourceProfileVersion": "0.1.0",
       "packageId": "ocrs:package:CW-101-RFDC-READY",
-      "packageVersion": "0.1.0",
+      "packageSchemaVersion": "0.1.0",
       "manifestVersion": "0.1.0",
       "contentHash": {
         "algorithm": "sha256",
@@ -491,11 +491,13 @@
       "boundaryIdentifiers": ["ocrs:boundary:CW-101-SYSTEM", "ocrs:boundary:CW-101-RFDC"],
       "createdAtSource": "2026-09-01T18:00:00Z",
       "producingParty": "ocrs:party:commissioning-team",
-      "qualifications": ["OCRS satisfied result is evidence input only."],
-      "exclusions": ["No Level 1 authority is conveyed."],
+      "qualifications": [
+        "Fictional reference data; ICxA evidence mappings marked for verification are not asserted as official requirements."
+      ],
+      "exclusions": ["No OAP records or Level 1 authorization are included."],
       "retrievalReference": "urn:example:ocrs:CW-101-RFDC-READY",
       "custodyStatement": "Fictional controlled evidence repository",
-      "validationStatus": "verified",
+      "claimedValidationStatus": "unverified",
       "inventoryDigest": {
         "algorithm": "sha256",
         "value": "13a5c95ccfe6f1d55b1505a8bce34d2b527029a0fcfe2a2aaf13f0fa9e09a756"
@@ -590,7 +592,11 @@
       "directorRoleAssignmentId": "oap:role-assignment:director",
       "determinedAt": "2026-09-02T12:00:00Z",
       "determination": "supports_authorization",
-      "evidenceBasisIds": ["oap:evidence-submission:ALPHA-1", "oap:auditor-evaluation:ALPHA-1"],
+      "evidenceBasisIds": [
+        "oap:external-package:CW101-RFDC",
+        "oap:evidence-submission:ALPHA-1",
+        "oap:auditor-evaluation:ALPHA-1"
+      ],
       "residualRiskDeclarationId": "oap:residual-risk-declaration:ALPHA-1",
       "rationale": "Fictional human determination after considering the independent evaluation and residual risk."
     },
@@ -629,7 +635,9 @@
       "scopeStatement": "Authorization applies only to the declared outcome and boundary.",
       "evidenceBasisIds": [
         "oap:external-package:CW101-RFDC",
+        "oap:evidence-submission:ALPHA-1",
         "oap:auditor-evaluation:ALPHA-1",
+        "oap:residual-risk-declaration:ALPHA-1",
         "oap:director-determination:ALPHA-1",
         "oap:residual-risk-acceptance:ALPHA-1"
       ],

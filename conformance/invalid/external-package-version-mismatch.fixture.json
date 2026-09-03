@@ -1,0 +1,6 @@
+{
+  "name": "falsified OCRS package schema version metadata",
+  "expectedCode": "EXTERNAL_PACKAGE_VERSION_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [{ "op": "replace", "path": "/records/23/packageSchemaVersion", "value": "9.0.0" }]
+}

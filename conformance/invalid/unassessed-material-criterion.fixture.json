@@ -1,0 +1,36 @@
+{
+  "name": "material submitted criterion is never assessed",
+  "expectedCode": "INCOMPLETE_ASSESSMENT_COVERAGE",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:outcome-criterion:ALPHA-SECOND",
+        "entityType": "outcome-criterion",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "statement": "Second material criterion",
+        "evidenceNeed": "Decision-relevant evidence",
+        "sufficiencyCriteria": "Independent assessment",
+        "consequenceBasis": "Material authorization consequence"
+      }
+    },
+    {
+      "op": "replace",
+      "path": "/records/7/criterionIds",
+      "value": ["oap:outcome-criterion:ALPHA-EVIDENCE", "oap:outcome-criterion:ALPHA-SECOND"]
+    },
+    {
+      "op": "replace",
+      "path": "/records/11/criterionIds",
+      "value": ["oap:outcome-criterion:ALPHA-EVIDENCE", "oap:outcome-criterion:ALPHA-SECOND"]
+    },
+    {
+      "op": "replace",
+      "path": "/records/24/criterionIds",
+      "value": ["oap:outcome-criterion:ALPHA-EVIDENCE", "oap:outcome-criterion:ALPHA-SECOND"]
+    }
+  ]
+}

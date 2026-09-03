@@ -1,0 +1,97 @@
+{
+  "name": "delegate assignment is broad but delegated action scope is narrow",
+  "expectedCode": "AUTHORITY_OUT_OF_SCOPE",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:party:narrow-delegate",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "name": "Narrowly delegated Director",
+        "partyType": "person",
+        "organizationId": "oap:party:owner-org"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:authority-scope:narrow-determination",
+        "entityType": "authority-scope",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "projectIds": ["oap:project:ALPHA"],
+        "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "permittedActions": ["make_outcome_determination"]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/33",
+      "value": {
+        "id": "oap:role-assignment:narrow-delegate",
+        "entityType": "role-assignment",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "partyId": "oap:party:narrow-delegate",
+        "role": "outcome_director",
+        "authorityScopeId": "oap:authority-scope:director",
+        "validFrom": "2026-08-01T00:00:00Z",
+        "validTo": "2026-12-31T23:59:59Z",
+        "appointmentBasis": "Fictional appointment",
+        "competenceBasis": "Fictional competence",
+        "delegationId": "oap:delegation:narrow-determination"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/34",
+      "value": {
+        "id": "oap:delegation:narrow-determination",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:narrow-delegate",
+        "authorityScopeId": "oap:authority-scope:narrow-determination",
+        "validFrom": "2026-08-01T00:00:00Z",
+        "validTo": "2026-12-31T23:59:59Z",
+        "basis": "Determination only",
+        "status": "active"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/35",
+      "value": {
+        "id": "oap:conflict:narrow-delegate",
+        "entityType": "conflict-of-interest-declaration",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "roleAssignmentId": "oap:role-assignment:narrow-delegate",
+        "declaredAt": "2026-08-01T00:00:00Z",
+        "status": "no_conflict_declared",
+        "details": "No conflict declared."
+      }
+    },
+    {
+      "op": "replace",
+      "path": "/records/28/directorRoleAssignmentId",
+      "value": "oap:role-assignment:narrow-delegate"
+    },
+    {
+      "op": "replace",
+      "path": "/records/29/directorRoleAssignmentId",
+      "value": "oap:role-assignment:narrow-delegate"
+    },
+    {
+      "op": "replace",
+      "path": "/records/30/directorRoleAssignmentId",
+      "value": "oap:role-assignment:narrow-delegate"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "authorization references a different Auditor evaluation",
+  "expectedCode": "AUTHORIZATION_EVALUATION_MISMATCH",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/30/auditorEvaluationId",
+      "value": "oap:sufficiency-assessment:ALPHA-1"
+    }
+  ]
+}

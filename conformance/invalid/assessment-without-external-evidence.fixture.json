@@ -1,0 +1,5 @@
+{
+  "name": "sufficiency assessment references no external evidence package",
+  "expectedCode": "ASSESSMENT_EVIDENCE_MISMATCH",
+  "mutations": [{ "op": "replace", "path": "/records/25/evidencePackageReferenceIds", "value": [] }]
+}

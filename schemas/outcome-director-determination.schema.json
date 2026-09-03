@@ -29,7 +29,7 @@
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "boundaryIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "auditorEvaluationId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
@@ -44,7 +44,7 @@
           "enum": ["supports_authorization", "does_not_support_authorization", "deferred"]
         },
         "evidenceBasisIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "residualRiskDeclarationId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"

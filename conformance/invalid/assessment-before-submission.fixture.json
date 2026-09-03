@@ -1,0 +1,7 @@
+{
+  "name": "assessment predates its evidence submission",
+  "expectedCode": "INVALID_CHRONOLOGY",
+  "mutations": [
+    { "op": "replace", "path": "/records/25/assessedAt", "value": "2026-09-02T09:59:00Z" }
+  ]
+}

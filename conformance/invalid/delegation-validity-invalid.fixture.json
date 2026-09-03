@@ -1,0 +1,28 @@
+{
+  "name": "delegation validity exceeds assignment validity",
+  "expectedCode": "DELEGATION_VALIDITY_INVALID",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/17/delegationId",
+      "value": "oap:delegation:BAD-VALIDITY"
+    },
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:delegation:BAD-VALIDITY",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-07-01T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:director",
+        "authorityScopeId": "oap:authority-scope:director",
+        "validFrom": "2026-07-01T00:00:00Z",
+        "validTo": "2027-01-01T00:00:00Z",
+        "basis": "Invalid time expansion",
+        "status": "active"
+      }
+    }
+  ]
+}

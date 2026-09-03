@@ -1,0 +1,28 @@
+{
+  "name": "Current historical authorization record with effective withdrawal",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:CONFORMANCE-WITHDRAWN",
+  "expectedState": "withdrawn",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-change:VALID-WITHDRAWAL",
+        "entityType": "authorization-change",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-03T00:00:00Z",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "actorType": "human_authority",
+        "changedByRoleAssignmentId": "oap:role-assignment:director",
+        "changedAt": "2026-09-03T00:00:00Z",
+        "changeType": "withdrawn",
+        "basis": "Fictional authorized withdrawal.",
+        "generationMethod": "human_supplied"
+      }
+    }
+  ]
+}

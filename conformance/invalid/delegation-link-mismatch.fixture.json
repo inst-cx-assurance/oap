@@ -1,0 +1,23 @@
+{
+  "name": "delegate assignment and delegation links disagree",
+  "expectedCode": "DELEGATION_LINK_MISMATCH",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:delegation:UNLINKED",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-02T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:director",
+        "authorityScopeId": "oap:authority-scope:director",
+        "validFrom": "2026-08-02T00:00:00Z",
+        "validTo": "2026-12-01T00:00:00Z",
+        "basis": "Missing reciprocal assignment link",
+        "status": "active"
+      }
+    }
+  ]
+}

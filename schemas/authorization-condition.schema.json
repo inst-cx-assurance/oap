@@ -18,7 +18,8 @@
         "escalationRequirements",
         "verificationCriteria",
         "status",
-        "sourceRecordIds"
+        "sourceRecordIds",
+        "authorizationId"
       ],
       "properties": {
         "entityType": { "const": "authorization-condition" },
@@ -29,7 +30,7 @@
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "boundaryIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "ownerRoleAssignmentId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
@@ -43,13 +44,22 @@
         "verificationCriteria": { "type": "string", "minLength": 1 },
         "status": { "enum": ["open", "verified_closed", "cancelled", "superseded"] },
         "sourceRecordIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "authorizationId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "closureEvidencePackageReferenceIds": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+        }
+      },
+      "if": { "properties": { "status": { "const": "verified_closed" } } },
+      "then": {
+        "required": ["closureEvidencePackageReferenceIds"],
+        "properties": {
+          "closureEvidencePackageReferenceIds": {
+            "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
+          }
         }
       }
     }

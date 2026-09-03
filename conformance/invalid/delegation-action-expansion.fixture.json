@@ -1,0 +1,23 @@
+{
+  "name": "delegation expands delegator actions",
+  "expectedCode": "DELEGATION_ACTION_EXPANSION",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:delegation:EXPANDS",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-02T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:director",
+        "authorityScopeId": "oap:authority-scope:submit",
+        "validFrom": "2026-08-02T00:00:00Z",
+        "validTo": "2026-12-01T00:00:00Z",
+        "basis": "Invalid expansion",
+        "status": "active"
+      }
+    }
+  ]
+}

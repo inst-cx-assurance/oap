@@ -1,0 +1,14 @@
+{
+  "name": "Timely mitigated Director conflict declaration",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:CONFORMANCE-MITIGATED-CONFLICT",
+  "expectedState": "authorized",
+  "mutations": [
+    { "op": "replace", "path": "/records/20/status", "value": "mitigated" },
+    {
+      "op": "add",
+      "path": "/records/20/mitigation",
+      "value": "Independent governance review and recorded recusal from evidence production."
+    }
+  ]
+}

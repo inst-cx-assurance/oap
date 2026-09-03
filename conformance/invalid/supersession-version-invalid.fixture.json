@@ -1,0 +1,19 @@
+{
+  "name": "successor does not advance the record version",
+  "expectedCode": "SUPERSESSION_VERSION_INVALID",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:party:owner-replacement",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-03T00:00:00Z",
+        "supersedes": "oap:party:owner-org",
+        "name": "Replacement owner organization",
+        "partyType": "organization"
+      }
+    }
+  ]
+}

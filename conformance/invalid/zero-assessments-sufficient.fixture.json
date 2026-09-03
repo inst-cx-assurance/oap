@@ -1,0 +1,5 @@
+{
+  "name": "evidence sufficient with zero assessments",
+  "expectedCode": "INCOMPLETE_ASSESSMENT_COVERAGE",
+  "mutations": [{ "op": "replace", "path": "/records/26/assessmentIds", "value": [] }]
+}

@@ -20,7 +20,7 @@
         "sourceProfileId": "ocrs:profile:rfdc",
         "sourceProfileVersion": "0.1.0",
         "packageId": "ocrs:package:CW-101-RFDC-READY-REV2",
-        "packageVersion": "0.2.0",
+        "packageSchemaVersion": "0.1.0",
         "manifestVersion": "0.1.0",
         "contentHash": {
           "algorithm": "sha256",
@@ -36,7 +36,7 @@
         "exclusions": ["Prior authorization basis is not replaced."],
         "retrievalReference": "urn:example:ocrs:CW-101-RFDC-READY-REV2",
         "custodyStatement": "Fictional controlled evidence repository",
-        "validationStatus": "verified",
+        "claimedValidationStatus": "unverified",
         "inventoryDigest": {
           "algorithm": "sha256",
           "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
@@ -52,7 +52,12 @@
         "entityType": "authorization-change",
         "recordVersion": "1.0.0",
         "createdAt": "2026-09-03T10:05:00Z",
+        "generationMethod": "human_supplied",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
         "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "actorType": "human_authority",
         "changedByRoleAssignmentId": "oap:role-assignment:director",
         "changedAt": "2026-09-03T10:05:00Z",
         "changeType": "reassessment_required",

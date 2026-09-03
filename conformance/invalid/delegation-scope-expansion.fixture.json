@@ -1,0 +1,37 @@
+{
+  "name": "delegation expands project and boundary scope",
+  "expectedCode": "DELEGATION_SCOPE_EXPANSION",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authority-scope:expanded",
+        "entityType": "authority-scope",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "projectIds": ["oap:project:OTHER"],
+        "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+        "boundaryIds": ["oap:authorization-boundary:OTHER"],
+        "permittedActions": ["issue_outcome_authorization"]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:delegation:EXPANDED-SCOPE",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-02T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:director",
+        "authorityScopeId": "oap:authority-scope:expanded",
+        "validFrom": "2026-08-02T00:00:00Z",
+        "validTo": "2026-12-01T00:00:00Z",
+        "basis": "Invalid expanded scope",
+        "status": "active"
+      }
+    }
+  ]
+}

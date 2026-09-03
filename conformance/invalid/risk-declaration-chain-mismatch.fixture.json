@@ -1,0 +1,11 @@
+{
+  "name": "determination uses a risk declaration outside its submission chain",
+  "expectedCode": "RISK_DECLARATION_MISMATCH",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/27/submissionId",
+      "value": "oap:evidence-submission:UNRELATED"
+    }
+  ]
+}

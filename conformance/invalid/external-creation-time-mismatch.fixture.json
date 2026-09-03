@@ -1,0 +1,8 @@
+{
+  "name": "falsified OCRS package creation time",
+  "expectedCode": "EXTERNAL_CREATION_TIME_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/createdAtSource", "value": "2026-01-01T00:00:00Z" }
+  ]
+}

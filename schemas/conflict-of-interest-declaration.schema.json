@@ -15,10 +15,15 @@
         "declaredAt": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
         },
+        "validTo": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
         "status": { "enum": ["no_conflict_declared", "mitigated", "unresolved"] },
         "details": { "type": "string" },
-        "mitigation": { "type": "string" }
-      }
+        "mitigation": { "type": "string", "minLength": 1 }
+      },
+      "if": { "properties": { "status": { "const": "mitigated" } } },
+      "then": { "required": ["mitigation"] }
     }
   ],
   "unevaluatedProperties": false

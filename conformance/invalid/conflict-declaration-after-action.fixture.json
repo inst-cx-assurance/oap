@@ -1,0 +1,7 @@
+{
+  "name": "conflict declaration is created after the supported action",
+  "expectedCode": "CONFLICT_DECLARATION_INVALID_AT_ACTION_TIME",
+  "mutations": [
+    { "op": "replace", "path": "/records/19/declaredAt", "value": "2026-09-03T00:00:00Z" }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "unsupported OCRS canonicalization declaration",
+  "expectedCode": "EXTERNAL_CANONICALIZATION_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/canonicalizationMethod", "value": "unknown" }
+  ]
+}

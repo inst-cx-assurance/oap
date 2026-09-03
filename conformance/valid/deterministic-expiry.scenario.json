@@ -1,0 +1,27 @@
+{
+  "name": "Deterministic expiry detection after authorization validTo",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:CONFORMANCE-DETERMINISTIC-EXPIRY",
+  "expectedState": "expired",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-change:VALID-EXPIRY",
+        "entityType": "authorization-change",
+        "recordVersion": "1.0.0",
+        "createdAt": "2027-01-01T00:00:00Z",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "actorType": "system_detection",
+        "changedAt": "2027-01-01T00:00:00Z",
+        "changeType": "expired",
+        "basis": "The declared validTo instant has passed.",
+        "generationMethod": "system_capture"
+      }
+    }
+  ]
+}

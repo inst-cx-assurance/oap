@@ -1,0 +1,6 @@
+{
+  "name": "falsified OCRS package identifier",
+  "expectedCode": "EXTERNAL_PACKAGE_IDENTITY_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [{ "op": "replace", "path": "/records/23/packageId", "value": "ocrs:package:OTHER" }]
+}

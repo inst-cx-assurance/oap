@@ -1,9 +1,19 @@
 import path from 'node:path';
 import { createSchemaContext } from './schema-context.js';
 import { jsonFiles, loadJson } from './io.js';
-import { mutate, type ControlledScenario, type InvalidFixture } from './fixtures.js';
+import {
+  materializeInvalidFixture,
+  mutate,
+  type ControlledScenario,
+  type InvalidFixture,
+} from './fixtures.js';
 import { packageHash } from './integrity.js';
-import { verifyExternalPackage, type SuppliedExternalPackage } from './external-verifier.js';
+import {
+  missingExternalPackageDiagnostic,
+  createExternalContract,
+  verifyExternalPackage,
+  type SuppliedExternalPackage,
+} from './external-verifier.js';
 import { type OapPackage } from './types.js';
 import { validatePackage } from './validator.js';
 
@@ -47,7 +57,20 @@ if (mode === 'schemas') {
     f.endsWith('.fixture.json'),
   )) {
     const fixture = loadJson<InvalidFixture>(file);
-    const diagnostics = validatePackage(mutate(base, fixture.mutations), context);
+    let diagnostics;
+    if (fixture.validationMode === 'external-ocrs-contract') {
+      const contractBase = structuredClone(base);
+      const originalReference = contractBase.records.find(
+        (record) => record.entityType === 'external-package-reference',
+      );
+      if (!originalReference) throw new Error('External contract fixture has no reference.');
+      const supplied = createExternalContract(originalReference);
+      const mutatedPackage = mutate(contractBase, fixture.mutations);
+      const mutatedReference = mutatedPackage.records.find(
+        (record) => record.entityType === 'external-package-reference',
+      )!;
+      diagnostics = verifyExternalPackage(mutatedReference, supplied);
+    } else diagnostics = validatePackage(materializeInvalidFixture(base, fixture), context);
     if (!diagnostics.some((d) => d.code === fixture.expectedCode))
       throw new Error(
         `${file} expected ${fixture.expectedCode}; got ${JSON.stringify(diagnostics, null, 2)}`,
@@ -61,22 +84,17 @@ if (mode === 'schemas') {
   const reference = pkg.records.find(
     (r) => r.entityType === 'external-package-reference' && r.sourceProtocolId === 'OCRS',
   );
-  if (
-    !reference ||
-    reference.validationStatus !== 'verified' ||
-    !reference.contentHash ||
-    !reference.inventoryDigest
-  )
-    throw new Error('Canonical OCRS reference is not integrity-bound and verified.');
+  if (!reference || !reference.contentHash || !reference.inventoryDigest)
+    throw new Error('Canonical OCRS reference is not integrity-bound.');
   const suppliedFile = process.argv[3];
-  if (suppliedFile) {
-    const supplied = loadJson<SuppliedExternalPackage>(path.resolve(root, suppliedFile));
-    const diagnostics = verifyExternalPackage(reference, supplied);
-    if (diagnostics.length)
-      throw new Error(`OCRS package verification failed: ${JSON.stringify(diagnostics, null, 2)}`);
-  }
+  if (!suppliedFile)
+    throw new Error(JSON.stringify(missingExternalPackageDiagnostic(reference.id), null, 2));
+  const supplied = loadJson<SuppliedExternalPackage>(path.resolve(root, suppliedFile));
+  const diagnostics = verifyExternalPackage(reference, supplied);
+  if (diagnostics.length)
+    throw new Error(`OCRS package verification failed: ${JSON.stringify(diagnostics, null, 2)}`);
   console.log(
-    `OCRS evidence-input reference verified${suppliedFile ? ' against supplied package content' : ' for required bindings'}: ${reference.packageId}@${reference.manifestVersion}; no OCRS authority imported.`,
+    `OCRS evidence-input reference verified against supplied package content: ${reference.packageId}@${reference.manifestVersion}; no OCRS authority imported.`,
   );
 } else {
   throw new Error(`Unknown mode ${mode}.`);
@@ -96,7 +114,10 @@ function loadResolved(file: string): OapPackage {
     recordId: r.id,
     entityType: r.entityType,
     recordVersion: r.recordVersion,
-    supersessionStatus: r.supersessionStatus === 'superseded' ? 'superseded' : 'current',
+    supersessionStatus: pkg.records.some((candidate) => candidate.supersedes === r.id)
+      ? 'superseded'
+      : 'current',
+    ...(r.supersedes ? { supersedesRecordId: r.supersedes } : {}),
   }));
   pkg.manifest.contentHash.value = packageHash(pkg);
   return pkg;

@@ -1,0 +1,8 @@
+{
+  "name": "falsified OCRS producer metadata",
+  "expectedCode": "EXTERNAL_PRODUCER_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/producingParty", "value": "ocrs:party:FALSE" }
+  ]
+}

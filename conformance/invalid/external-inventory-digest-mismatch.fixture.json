@@ -1,0 +1,12 @@
+{
+  "name": "falsified OCRS inventory digest",
+  "expectedCode": "EXTERNAL_INVENTORY_DIGEST_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/23/inventoryDigest/value",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ]
+}

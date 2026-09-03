@@ -1,0 +1,5 @@
+{
+  "name": "OCRS evidence is present without the OCRS input profile",
+  "expectedCode": "REQUIRED_PROFILE_MISSING",
+  "mutations": [{ "op": "remove", "path": "/manifest/profiles/1" }]
+}

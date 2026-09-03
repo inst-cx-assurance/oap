@@ -1,0 +1,20 @@
+{
+  "name": "withheld chain uses different Director assignments",
+  "expectedCode": "DIRECTOR_ACTS_NOT_COHERENT",
+  "mutations": [
+    { "op": "replace", "path": "/records/25/sufficiency", "value": "insufficient" },
+    { "op": "replace", "path": "/records/26/conclusion", "value": "evidence_insufficient" },
+    {
+      "op": "replace",
+      "path": "/records/28/determination",
+      "value": "does_not_support_authorization"
+    },
+    { "op": "replace", "path": "/records/29/decision", "value": "not_accepted" },
+    {
+      "op": "replace",
+      "path": "/records/29/directorRoleAssignmentId",
+      "value": "oap:role-assignment:auditor"
+    },
+    { "op": "replace", "path": "/records/30/decision", "value": "withheld" }
+  ]
+}

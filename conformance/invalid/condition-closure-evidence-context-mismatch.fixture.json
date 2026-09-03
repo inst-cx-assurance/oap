@@ -1,0 +1,72 @@
+{
+  "name": "verified condition closure uses evidence for unrelated subjects and boundaries",
+  "expectedCode": "CONDITION_CLOSURE_EVIDENCE_MISMATCH",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-condition:BAD-CLOSURE",
+        "entityType": "authorization-condition",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T12:09:00Z",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "ownerRoleAssignmentId": "oap:role-assignment:director",
+        "requiredAction": "Verify closure.",
+        "dueDate": "2026-09-16T23:59:59Z",
+        "monitoringRequirements": "Monitor closure.",
+        "escalationRequirements": "Escalate mismatch.",
+        "verificationCriteria": "Evidence must match the authorized scope.",
+        "status": "verified_closed",
+        "sourceRecordIds": ["oap:director-determination:ALPHA-1"],
+        "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "closureEvidencePackageReferenceIds": ["oap:external-package:UNRELATED"]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:external-package:UNRELATED",
+        "entityType": "external-package-reference",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-03T00:00:00Z",
+        "sourceProtocolId": "OCRS",
+        "sourceProtocolVersion": "0.1.0",
+        "sourceProfileId": "ocrs:profile:rfdc",
+        "sourceProfileVersion": "0.1.0",
+        "packageId": "ocrs:package:UNRELATED",
+        "packageSchemaVersion": "0.1.0",
+        "manifestVersion": "0.1.0",
+        "contentHash": {
+          "algorithm": "sha256",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "canonicalizationMethod": "OCRS Canonical JSON v0.1",
+        "projectIdentifier": "ocrs:project:OTHER",
+        "subjectIdentifiers": ["ocrs:system:OTHER"],
+        "boundaryIdentifiers": ["ocrs:boundary:OTHER"],
+        "createdAtSource": "2026-09-03T00:00:00Z",
+        "producingParty": "ocrs:party:other",
+        "qualifications": ["Fictional unrelated evidence."],
+        "exclusions": ["Not applicable to ALPHA."],
+        "retrievalReference": "urn:example:ocrs:UNRELATED",
+        "custodyStatement": "Fictional custody",
+        "claimedValidationStatus": "unverified",
+        "inventoryDigest": {
+          "algorithm": "sha256",
+          "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "supersessionStatus": "current"
+      }
+    },
+    { "op": "replace", "path": "/records/30/decision", "value": "authorized_with_conditions" },
+    {
+      "op": "replace",
+      "path": "/records/30/conditionIds",
+      "value": ["oap:authorization-condition:BAD-CLOSURE"]
+    }
+  ]
+}

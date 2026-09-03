@@ -1,5 +1,7 @@
 {
   "name": "determination context differs from evaluation",
   "expectedCode": "DETERMINATION_EVALUATION_MISMATCH",
-  "mutations": [{ "op": "replace", "path": "/records/28/boundaryIds", "value": [] }]
+  "mutations": [
+    { "op": "replace", "path": "/records/28/projectId", "value": "oap:party:owner-org" }
+  ]
 }

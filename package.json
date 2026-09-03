@@ -17,7 +17,9 @@
     "validate:semantic": "node --import tsx src/cli.ts semantic",
     "verify:ocrs": "node --import tsx src/cli.ts verify-ocrs",
     "test": "vitest run",
-    "conformance": "npm run format:check && npm run lint && npm run build && npm run validate:schemas && npm run validate:valid && npm run validate:invalid && npm run validate:semantic && npm test && npm run verify:ocrs",
+    "conformance:core": "npm run format:check && npm run lint && npm run build && npm run validate:schemas && npm run validate:valid && npm run validate:invalid && npm run validate:semantic && npm test",
+    "conformance:ocrs": "npm run conformance:core && npm run verify:ocrs --",
+    "conformance": "npm run conformance:core",
     "audit:dependencies": "npm audit"
   },
   "devDependencies": {

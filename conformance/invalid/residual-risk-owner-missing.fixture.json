@@ -1,0 +1,11 @@
+{
+  "name": "residual-risk item owner does not exist",
+  "expectedCode": "RISK_OWNER_INVALID",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/27/riskItems/0/ownerPartyId",
+      "value": "oap:party:MISSING"
+    }
+  ]
+}

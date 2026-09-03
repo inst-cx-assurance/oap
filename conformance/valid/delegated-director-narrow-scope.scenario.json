@@ -1,0 +1,103 @@
+{
+  "name": "Properly delegated Director authority within narrower action scope",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:CONFORMANCE-DELEGATED-DIRECTOR",
+  "expectedState": "authorized",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:party:delegate-director",
+        "entityType": "party",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "name": "Delegated Outcome Director",
+        "partyType": "person",
+        "organizationId": "oap:party:owner-org"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:authority-scope:delegate-director",
+        "entityType": "authority-scope",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "projectIds": ["oap:project:ALPHA"],
+        "outcomeIds": ["oap:outcome:ALPHA-TOC"],
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "permittedActions": [
+          "make_outcome_determination",
+          "accept_residual_risk",
+          "issue_outcome_authorization"
+        ]
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/33",
+      "value": {
+        "id": "oap:role-assignment:delegate-director",
+        "entityType": "role-assignment",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "partyId": "oap:party:delegate-director",
+        "role": "outcome_director",
+        "authorityScopeId": "oap:authority-scope:delegate-director",
+        "validFrom": "2026-08-01T00:00:00Z",
+        "validTo": "2026-12-01T00:00:00Z",
+        "appointmentBasis": "Fictional delegated appointment",
+        "competenceBasis": "Fictional competence basis",
+        "delegationId": "oap:delegation:director-narrow"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/34",
+      "value": {
+        "id": "oap:delegation:director-narrow",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:delegate-director",
+        "authorityScopeId": "oap:authority-scope:delegate-director",
+        "validFrom": "2026-08-01T00:00:00Z",
+        "validTo": "2026-12-01T00:00:00Z",
+        "basis": "Fictional narrower Director delegation",
+        "status": "active"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/35",
+      "value": {
+        "id": "oap:conflict:delegate-director",
+        "entityType": "conflict-of-interest-declaration",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "roleAssignmentId": "oap:role-assignment:delegate-director",
+        "declaredAt": "2026-08-01T00:00:00Z",
+        "status": "no_conflict_declared",
+        "details": "No conflict declared for fictional delegation."
+      }
+    },
+    {
+      "op": "replace",
+      "path": "/records/28/directorRoleAssignmentId",
+      "value": "oap:role-assignment:delegate-director"
+    },
+    {
+      "op": "replace",
+      "path": "/records/29/directorRoleAssignmentId",
+      "value": "oap:role-assignment:delegate-director"
+    },
+    {
+      "op": "replace",
+      "path": "/records/30/directorRoleAssignmentId",
+      "value": "oap:role-assignment:delegate-director"
+    }
+  ]
+}

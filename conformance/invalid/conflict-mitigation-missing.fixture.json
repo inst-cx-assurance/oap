@@ -1,0 +1,5 @@
+{
+  "name": "mitigated conflict omits mitigation",
+  "expectedCode": "CONFLICT_MITIGATION_REQUIRED",
+  "mutations": [{ "op": "replace", "path": "/records/20/status", "value": "mitigated" }]
+}

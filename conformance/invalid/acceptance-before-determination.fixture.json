@@ -1,0 +1,7 @@
+{
+  "name": "residual-risk acceptance predates Director determination",
+  "expectedCode": "INVALID_CHRONOLOGY",
+  "mutations": [
+    { "op": "replace", "path": "/records/29/acceptedAt", "value": "2026-09-02T11:59:00Z" }
+  ]
+}

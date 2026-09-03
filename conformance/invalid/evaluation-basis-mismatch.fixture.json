@@ -1,0 +1,11 @@
+{
+  "name": "evaluation omits the submitted external package from its basis",
+  "expectedCode": "EVALUATION_BASIS_MISMATCH",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/26/evidenceBasisIds",
+      "value": ["oap:sufficiency-assessment:ALPHA-1"]
+    }
+  ]
+}

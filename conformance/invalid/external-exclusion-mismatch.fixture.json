@@ -1,0 +1,6 @@
+{
+  "name": "falsified OCRS exclusion metadata",
+  "expectedCode": "EXTERNAL_EXCLUSION_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [{ "op": "replace", "path": "/records/23/exclusions", "value": ["False exclusion"] }]
+}

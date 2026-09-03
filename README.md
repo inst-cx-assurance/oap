@@ -18,9 +18,12 @@ npm run validate:valid
 npm run validate:invalid
 npm run validate:semantic
 npm test
-npm run verify:ocrs
+npm run conformance:core
+npm run verify:ocrs -- C:\path\to\exact-ocrs-package.json
+npm run conformance:ocrs -- C:\path\to\exact-ocrs-package.json
 npm audit
-npm run conformance
 ```
 
-Supported reference runtimes are Node 22.13+ within Node 22 and Node 24. The protocol is language-neutral.
+`npm run conformance` is an alias for self-contained Core Conformance. OCRS-Input Profile Conformance requires actual supplied OCRS content and fails when the path is absent. A stored `claimedValidationStatus` never substitutes for that verification.
+
+Supported reference runtimes are Node 22.13+ within Node 22 and Node 24. JSON Schema, the normative specification, canonicalization vectors, diagnostics, and conformance fixtures define the language-neutral contract; TypeScript is only the reference implementation.

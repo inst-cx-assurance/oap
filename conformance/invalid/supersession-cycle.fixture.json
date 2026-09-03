@@ -1,0 +1,10 @@
+{
+  "name": "supersession graph contains a cycle",
+  "expectedCode": "SUPERSESSION_CYCLE",
+  "mutations": [
+    { "op": "replace", "path": "/records/0/recordVersion", "value": "2.0.0" },
+    { "op": "add", "path": "/records/0/supersedes", "value": "oap:party:delivery-org" },
+    { "op": "replace", "path": "/records/1/recordVersion", "value": "3.0.0" },
+    { "op": "add", "path": "/records/1/supersedes", "value": "oap:party:owner-org" }
+  ]
+}

@@ -67,7 +67,8 @@
         "escalationRequirements": "Escalate any safety or material reliability deviation immediately.",
         "verificationCriteria": "Owner verifies the monitoring record and closes all material deviations.",
         "status": "open",
-        "sourceRecordIds": ["oap:director-determination:ALPHA-1"]
+        "sourceRecordIds": ["oap:director-determination:ALPHA-1"],
+        "authorizationId": "oap:outcome-authorization:ALPHA-1"
       }
     },
     { "op": "replace", "path": "/records/30/decision", "value": "authorized_with_conditions" },

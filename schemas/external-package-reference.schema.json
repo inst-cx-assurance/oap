@@ -11,7 +11,7 @@
         "sourceProtocolId",
         "sourceProtocolVersion",
         "packageId",
-        "packageVersion",
+        "packageSchemaVersion",
         "manifestVersion",
         "contentHash",
         "canonicalizationMethod",
@@ -24,7 +24,7 @@
         "exclusions",
         "retrievalReference",
         "custodyStatement",
-        "validationStatus",
+        "claimedValidationStatus",
         "inventoryDigest",
         "supersessionStatus"
       ],
@@ -39,7 +39,7 @@
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
         },
         "packageId": { "type": "string", "minLength": 1 },
-        "packageVersion": {
+        "packageSchemaVersion": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/version"
         },
         "manifestVersion": {
@@ -65,12 +65,18 @@
         "createdAtSource": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
         },
+        "evidenceOrigin": {
+          "enum": ["generated_in_response_to_oen", "pre_existing_or_origin_unverified"]
+        },
+        "evidenceGeneratedAt": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
+        },
         "producingParty": { "type": "string", "minLength": 1 },
         "qualifications": { "type": "array", "items": { "type": "string", "minLength": 1 } },
         "exclusions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
         "retrievalReference": { "type": "string", "pattern": "^(https://|urn:)" },
         "custodyStatement": { "type": "string", "minLength": 1 },
-        "validationStatus": { "enum": ["verified", "unverified", "failed"] },
+        "claimedValidationStatus": { "enum": ["verified", "unverified", "failed"] },
         "inventoryDigest": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/hash"
         },

@@ -14,14 +14,21 @@ export const baseFile = path.join(
 export const base = () => loadJson<OapPackage>(baseFile);
 
 export function scenario(name: string): OapPackage {
-  const source = loadJson<ControlledScenario>(path.join(root, 'examples', 'canonical', name));
+  return scenarioFile(path.join(root, 'examples', 'canonical', name));
+}
+
+export function scenarioFile(file: string): OapPackage {
+  const source = loadJson<ControlledScenario>(file);
   const pkg = mutate(base(), source.mutations);
   pkg.manifest.packageId = source.packageId;
   pkg.manifest.inventory = pkg.records.map((r) => ({
     recordId: r.id,
     entityType: r.entityType,
     recordVersion: r.recordVersion,
-    supersessionStatus: r.supersessionStatus === 'superseded' ? 'superseded' : 'current',
+    supersessionStatus: pkg.records.some((candidate) => candidate.supersedes === r.id)
+      ? 'superseded'
+      : 'current',
+    ...(r.supersedes ? { supersedesRecordId: r.supersedes } : {}),
   }));
   pkg.manifest.contentHash.value = packageHash(pkg);
   return pkg;

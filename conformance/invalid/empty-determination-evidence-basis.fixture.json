@@ -1,0 +1,5 @@
+{
+  "name": "positive determination has empty evidence basis",
+  "expectedCode": "EMPTY_EVIDENCE_BASIS",
+  "mutations": [{ "op": "replace", "path": "/records/28/evidenceBasisIds", "value": [] }]
+}

@@ -1,5 +1,6 @@
 {
   "name": "invalid exact package inventory",
   "expectedCode": "INVALID_PACKAGE_INVENTORY",
+  "preserveIntegrity": true,
   "mutations": [{ "op": "remove", "path": "/manifest/inventory/0" }]
 }

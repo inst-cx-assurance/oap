@@ -12,7 +12,8 @@
         "delegateRoleAssignmentId",
         "authorityScopeId",
         "validFrom",
-        "basis"
+        "basis",
+        "status"
       ],
       "properties": {
         "entityType": { "const": "delegation" },

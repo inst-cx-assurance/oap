@@ -1,0 +1,8 @@
+{
+  "name": "falsified OCRS subject metadata",
+  "expectedCode": "EXTERNAL_SUBJECT_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/subjectIdentifiers", "value": ["ocrs:system:FALSE"] }
+  ]
+}

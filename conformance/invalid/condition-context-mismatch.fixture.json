@@ -1,0 +1,34 @@
+{
+  "name": "authorization condition has a different project context",
+  "expectedCode": "CONDITION_CONTEXT_MISMATCH",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-condition:WRONG-CONTEXT",
+        "entityType": "authorization-condition",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T12:09:00Z",
+        "projectId": "oap:party:owner-org",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "ownerRoleAssignmentId": "oap:role-assignment:director",
+        "requiredAction": "Close the controlled action.",
+        "dueDate": "2026-09-16T23:59:59Z",
+        "monitoringRequirements": "Monitor weekly.",
+        "escalationRequirements": "Escalate when overdue.",
+        "verificationCriteria": "Independent evidence accepted.",
+        "status": "open",
+        "sourceRecordIds": ["oap:director-determination:ALPHA-1"],
+        "authorizationId": "oap:outcome-authorization:ALPHA-1"
+      }
+    },
+    { "op": "replace", "path": "/records/30/decision", "value": "authorized_with_conditions" },
+    {
+      "op": "replace",
+      "path": "/records/30/conditionIds",
+      "value": ["oap:authorization-condition:WRONG-CONTEXT"]
+    }
+  ]
+}

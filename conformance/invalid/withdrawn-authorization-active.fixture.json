@@ -1,6 +1,6 @@
 {
-  "name": "withdrawn authorization treated as active",
-  "expectedCode": "WITHDRAWN_AUTHORIZATION_ACTIVE",
+  "name": "withdrawal predates its authorization",
+  "expectedCode": "AUTHORIZATION_CHANGE_CHRONOLOGY_INVALID",
   "mutations": [
     {
       "op": "add",
@@ -9,10 +9,15 @@
         "id": "oap:authorization-change:WITHDRAW",
         "entityType": "authorization-change",
         "recordVersion": "1.0.0",
-        "createdAt": "2026-09-03T00:00:00Z",
+        "createdAt": "2026-09-02T11:00:00Z",
+        "generationMethod": "human_supplied",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
         "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "actorType": "human_authority",
         "changedByRoleAssignmentId": "oap:role-assignment:director",
-        "changedAt": "2026-09-03T00:00:00Z",
+        "changedAt": "2026-09-02T11:00:00Z",
         "changeType": "withdrawn",
         "basis": "Fictional withdrawal"
       }

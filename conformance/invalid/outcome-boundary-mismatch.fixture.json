@@ -1,5 +1,7 @@
 {
   "name": "outcome or boundary mismatch",
   "expectedCode": "OUTCOME_BOUNDARY_MISMATCH",
-  "mutations": [{ "op": "replace", "path": "/records/26/boundaryIds", "value": [] }]
+  "mutations": [
+    { "op": "replace", "path": "/records/26/projectId", "value": "oap:party:owner-org" }
+  ]
 }

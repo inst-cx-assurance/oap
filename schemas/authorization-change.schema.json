@@ -8,20 +8,34 @@
       "type": "object",
       "required": [
         "entityType",
+        "projectId",
+        "outcomeId",
+        "boundaryIds",
         "authorizationId",
-        "changedByRoleAssignmentId",
+        "actorType",
         "changedAt",
         "changeType",
-        "basis"
+        "basis",
+        "generationMethod"
       ],
       "properties": {
         "entityType": { "const": "authorization-change" },
+        "projectId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "outcomeId": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
+        },
+        "boundaryIds": {
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
+        },
         "authorizationId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "changedByRoleAssignmentId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
+        "actorType": { "enum": ["human_authority", "system_detection"] },
         "changedAt": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/timestamp"
         },
@@ -32,7 +46,25 @@
         "replacementAuthorizationId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "changeType": { "enum": ["withdrawn", "revoked", "superseded"] } }
+          },
+          "then": {
+            "properties": {
+              "actorType": { "const": "human_authority" },
+              "generationMethod": { "const": "human_supplied" }
+            },
+            "required": ["changedByRoleAssignmentId"]
+          }
+        },
+        {
+          "if": { "properties": { "actorType": { "const": "human_authority" } } },
+          "then": { "required": ["changedByRoleAssignmentId"] }
+        }
+      ]
     }
   ],
   "unevaluatedProperties": false

@@ -1,0 +1,7 @@
+{
+  "name": "Director determination predates its risk declaration",
+  "expectedCode": "INVALID_CHRONOLOGY",
+  "mutations": [
+    { "op": "replace", "path": "/records/27/declaredAt", "value": "2026-09-02T12:01:00Z" }
+  ]
+}

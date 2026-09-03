@@ -1,52 +1,79 @@
+import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
-import { verifyExternalPackage } from '../src/external-verifier.js';
-import { canonicalize, inventoryDigest, sha256 } from '../src/integrity.js';
-import { base } from './helpers.js';
+import {
+  createExternalContract,
+  missingExternalPackageDiagnostic,
+  verifyExternalPackage,
+} from '../src/external-verifier.js';
+import { base, root } from './helpers.js';
 
-describe('external-package and authority boundary', () => {
+describe('external OCRS evidence boundary', () => {
   const reference = () =>
-    base().records.find((r) => r.entityType === 'external-package-reference')!;
+    base().records.find((record) => record.entityType === 'external-package-reference')!;
 
-  it('verifies a supplied external identity, hash, version and inventory', () => {
+  it('verifies every declared binding against supplied content', () => {
     const ref = reference();
-    const inventory = [{ recordId: 'x', recordVersion: '1.0.0' }];
-    ref.inventoryDigest = { algorithm: 'sha256', value: inventoryDigest(inventory) };
-    const supplied = {
-      manifest: {
-        packageId: ref.packageId as string,
-        manifestVersion: ref.manifestVersion as string,
-        ocrsVersion: ref.sourceProtocolVersion as string,
-        contentHash: { algorithm: 'sha256', value: '' },
-        inventory,
-      },
-    };
-    const without = structuredClone(supplied) as any;
-    delete without.manifest.contentHash;
-    supplied.manifest.contentHash.value = sha256(canonicalize(without));
-    ref.contentHash = supplied.manifest.contentHash;
+    const supplied = createExternalContract(ref);
     expect(verifyExternalPackage(ref, supplied)).toEqual([]);
+  });
+
+  it.each([
+    ['sourceProtocolId', 'OTHER', 'EXTERNAL_PROTOCOL_MISMATCH'],
+    ['sourceProtocolVersion', '9.9.9', 'EXTERNAL_PROTOCOL_MISMATCH'],
+    ['sourceProfileVersion', '9.9.9', 'EXTERNAL_PROFILE_MISMATCH'],
+    ['packageId', 'ocrs:package:OTHER', 'EXTERNAL_PACKAGE_IDENTITY_MISMATCH'],
+    ['packageSchemaVersion', '9.9.9', 'EXTERNAL_PACKAGE_VERSION_MISMATCH'],
+    ['manifestVersion', '9.9.9', 'EXTERNAL_PACKAGE_VERSION_MISMATCH'],
+    ['canonicalizationMethod', 'unknown', 'EXTERNAL_CANONICALIZATION_MISMATCH'],
+    ['projectIdentifier', 'ocrs:project:OTHER', 'EXTERNAL_PROJECT_MISMATCH'],
+    ['subjectIdentifiers', ['ocrs:system:OTHER'], 'EXTERNAL_SUBJECT_MISMATCH'],
+    ['boundaryIdentifiers', ['ocrs:boundary:OTHER'], 'EXTERNAL_BOUNDARY_MISMATCH'],
+    ['producingParty', 'ocrs:party:OTHER', 'EXTERNAL_PRODUCER_MISMATCH'],
+    ['qualifications', ['falsified'], 'EXTERNAL_QUALIFICATION_MISMATCH'],
+    ['exclusions', ['falsified'], 'EXTERNAL_EXCLUSION_MISMATCH'],
+    ['createdAtSource', '2026-01-01T00:00:00Z', 'EXTERNAL_CREATION_TIME_MISMATCH'],
+    ['supersessionStatus', 'superseded', 'EXTERNAL_SUPERSESSION_MISMATCH'],
+    [
+      'inventoryDigest',
+      { algorithm: 'sha256', value: 'a'.repeat(64) },
+      'EXTERNAL_INVENTORY_DIGEST_MISMATCH',
+    ],
+  ])('rejects falsified %s metadata', (field, value, code) => {
+    const ref = reference();
+    const supplied = createExternalContract(ref);
+    ref[field] = value;
+    expect(verifyExternalPackage(ref, supplied).map((diagnostic) => diagnostic.code)).toContain(
+      code,
+    );
   });
 
   it('rejects package substitution', () => {
     const ref = reference();
-    const supplied = {
-      manifest: {
-        packageId: ref.packageId as string,
-        manifestVersion: ref.manifestVersion as string,
-        ocrsVersion: ref.sourceProtocolVersion as string,
-        contentHash: { algorithm: 'sha256', value: 'a'.repeat(64) },
-        inventory: [],
-      },
-    };
-    expect(verifyExternalPackage(ref, supplied).map((d) => d.code)).toContain(
+    const supplied = createExternalContract(ref);
+    supplied.manifest.projectId = 'ocrs:project:SUBSTITUTED';
+    expect(verifyExternalPackage(ref, supplied).map((diagnostic) => diagnostic.code)).toContain(
       'EXTERNAL_PACKAGE_HASH_MISMATCH',
     );
   });
 
-  it('treats OCRS satisfied only as evidence input', () => {
+  it('does not treat a claimed validation status as performed verification', () => {
+    const ref = reference();
+    ref.claimedValidationStatus = 'verified';
+    expect(missingExternalPackageDiagnostic(ref.id).code).toBe('EXTERNAL_VALIDATION_NOT_PERFORMED');
+  });
+
+  it('fails the OCRS verification command when no package is supplied', () => {
+    const result = spawnSync(process.execPath, ['--import', 'tsx', 'src/cli.ts', 'verify-ocrs'], {
+      cwd: root,
+      encoding: 'utf8',
+    });
+    expect(result.status).not.toBe(0);
+    expect(`${result.stdout}${result.stderr}`).toContain('EXTERNAL_VALIDATION_NOT_PERFORMED');
+  });
+
+  it('treats OCRS records only as external evidence input', () => {
     const ref = reference();
     expect(ref.sourceProtocolId).toBe('OCRS');
-    expect(ref.qualifications).toContain('OCRS satisfied result is evidence input only.');
     expect(ref.entityType).not.toBe('outcome-authorization');
   });
 });

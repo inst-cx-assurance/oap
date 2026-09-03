@@ -1,0 +1,26 @@
+{
+  "name": "evidence submitter makes a predating authorization change",
+  "expectedCode": "AUTHORIZATION_CHANGE_UNAUTHORIZED",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-change:BAD-ACTOR",
+        "entityType": "authorization-change",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T11:00:00Z",
+        "generationMethod": "human_supplied",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "actorType": "human_authority",
+        "changedByRoleAssignmentId": "oap:role-assignment:submitter",
+        "changedAt": "2026-09-02T11:00:00Z",
+        "changeType": "withdrawn",
+        "basis": "Invalid early withdrawal"
+      }
+    }
+  ]
+}

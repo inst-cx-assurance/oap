@@ -1,4 +1,5 @@
 import { type OapPackage } from './types.js';
+import { packageHash } from './integrity.js';
 
 export interface Mutation {
   op: 'add' | 'replace' | 'remove';
@@ -9,6 +10,8 @@ export interface InvalidFixture {
   name: string;
   expectedCode: string;
   mutations: Mutation[];
+  validationMode?: 'package' | 'external-ocrs-contract';
+  preserveIntegrity?: boolean;
 }
 export interface ControlledScenario {
   name: string;
@@ -38,4 +41,20 @@ export function mutate(pkg: OapPackage, mutations: Mutation[]): OapPackage {
     else parent[key] = mutation.value;
   }
   return copy as unknown as OapPackage;
+}
+
+export function materializeInvalidFixture(pkg: OapPackage, fixture: InvalidFixture): OapPackage {
+  const result = mutate(pkg, fixture.mutations);
+  if (fixture.preserveIntegrity) return result;
+  result.manifest.inventory = result.records.map((record) => ({
+    recordId: record.id,
+    entityType: record.entityType,
+    recordVersion: record.recordVersion,
+    supersessionStatus: result.records.some((candidate) => candidate.supersedes === record.id)
+      ? 'superseded'
+      : 'current',
+    ...(record.supersedes ? { supersedesRecordId: record.supersedes } : {}),
+  }));
+  result.manifest.contentHash.value = packageHash(result);
+  return result;
 }

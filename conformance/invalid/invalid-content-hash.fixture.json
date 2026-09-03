@@ -1,6 +1,7 @@
 {
   "name": "invalid package content hash",
   "expectedCode": "INVALID_CONTENT_HASH",
+  "preserveIntegrity": true,
   "mutations": [
     {
       "op": "replace",

@@ -1,0 +1,11 @@
+{
+  "name": "authorization cites acceptance of a different declaration",
+  "expectedCode": "AUTHORIZATION_ACCEPTANCE_MISMATCH",
+  "mutations": [
+    {
+      "op": "replace",
+      "path": "/records/29/declarationId",
+      "value": "oap:residual-risk-declaration:UNRELATED"
+    }
+  ]
+}

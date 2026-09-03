@@ -32,7 +32,7 @@
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "boundaryIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "submissionId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
@@ -53,7 +53,7 @@
         "currency": { "enum": ["current", "stale", "indeterminate"] },
         "rationale": { "type": "string", "minLength": 1 },
         "evidencePackageReferenceIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         }
       }
     }

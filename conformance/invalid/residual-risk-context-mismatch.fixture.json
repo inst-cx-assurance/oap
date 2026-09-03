@@ -1,0 +1,8 @@
+{
+  "name": "risk declaration and acceptance use another decision context",
+  "expectedCode": "RISK_CONTEXT_MISMATCH",
+  "mutations": [
+    { "op": "replace", "path": "/records/27/projectId", "value": "oap:party:owner-org" },
+    { "op": "replace", "path": "/records/29/projectId", "value": "oap:party:owner-org" }
+  ]
+}

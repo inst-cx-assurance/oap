@@ -1,0 +1,5 @@
+{
+  "name": "manifest profile version contradicts profile declaration",
+  "expectedCode": "PROFILE_DECLARATION_MISMATCH",
+  "mutations": [{ "op": "replace", "path": "/records/21/profileVersion", "value": "0.0.9" }]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "falsified external protocol metadata",
+  "expectedCode": "EXTERNAL_PROTOCOL_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [{ "op": "replace", "path": "/records/23/sourceProtocolVersion", "value": "9.0.0" }]
+}

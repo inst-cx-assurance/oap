@@ -1,0 +1,8 @@
+{
+  "name": "falsified OCRS boundary metadata",
+  "expectedCode": "EXTERNAL_BOUNDARY_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/boundaryIdentifiers", "value": ["ocrs:boundary:FALSE"] }
+  ]
+}

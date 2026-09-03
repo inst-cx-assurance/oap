@@ -1,0 +1,21 @@
+{
+  "name": "superseded conflict declaration is used for a later action",
+  "expectedCode": "CONFLICT_DECLARATION_SUPERSEDED",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:conflict:director-2",
+        "entityType": "conflict-of-interest-declaration",
+        "recordVersion": "2.0.0",
+        "createdAt": "2026-09-03T00:00:00Z",
+        "supersedes": "oap:conflict:director",
+        "roleAssignmentId": "oap:role-assignment:director",
+        "declaredAt": "2026-09-03T00:00:00Z",
+        "status": "no_conflict_declared",
+        "details": "Replacement declaration."
+      }
+    }
+  ]
+}

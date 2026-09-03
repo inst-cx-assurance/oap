@@ -1,0 +1,26 @@
+{
+  "name": "system detection improperly names a human decision maker",
+  "expectedCode": "AUTHORIZATION_CHANGE_UNAUTHORIZED",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:authorization-change:SYSTEM-WITH-ACTOR",
+        "entityType": "authorization-change",
+        "recordVersion": "1.0.0",
+        "createdAt": "2027-01-01T00:00:00Z",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "authorizationId": "oap:outcome-authorization:ALPHA-1",
+        "actorType": "system_detection",
+        "changedByRoleAssignmentId": "oap:role-assignment:director",
+        "changedAt": "2027-01-01T00:00:00Z",
+        "changeType": "expired",
+        "basis": "Clock detection cannot name a human actor.",
+        "generationMethod": "system_capture"
+      }
+    }
+  ]
+}

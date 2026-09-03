@@ -1,0 +1,24 @@
+{
+  "name": "delegation graph contains a self cycle",
+  "expectedCode": "DELEGATION_CYCLE",
+  "mutations": [
+    { "op": "add", "path": "/records/17/delegationId", "value": "oap:delegation:CYCLE" },
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:delegation:CYCLE",
+        "entityType": "delegation",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-02T00:00:00Z",
+        "delegatorRoleAssignmentId": "oap:role-assignment:director",
+        "delegateRoleAssignmentId": "oap:role-assignment:director",
+        "authorityScopeId": "oap:authority-scope:director",
+        "validFrom": "2026-08-02T00:00:00Z",
+        "validTo": "2026-12-01T00:00:00Z",
+        "basis": "Cyclic delegation",
+        "status": "active"
+      }
+    }
+  ]
+}

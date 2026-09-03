@@ -1,0 +1,7 @@
+{
+  "name": "Director determination predates Auditor evaluation",
+  "expectedCode": "INVALID_CHRONOLOGY",
+  "mutations": [
+    { "op": "replace", "path": "/records/28/determinedAt", "value": "2026-09-02T11:14:00Z" }
+  ]
+}

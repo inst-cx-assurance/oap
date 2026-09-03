@@ -1,0 +1,81 @@
+{
+  "name": "Complete multi-criterion assessment",
+  "basePackage": "examples/canonical/scenario-a-authorization-supported.package.json",
+  "packageId": "oap:package:CONFORMANCE-MULTI-CRITERION",
+  "expectedState": "authorized",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:outcome-criterion:ALPHA-RISK",
+        "entityType": "outcome-criterion",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-08-01T00:00:00Z",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "statement": "Residual-risk information is decision relevant.",
+        "evidenceNeed": "Declared residual-risk evidence",
+        "sufficiencyCriteria": "Independent current assessment",
+        "consequenceBasis": "Unassessed risk could affect authorization."
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:sufficiency-assessment:ALPHA-RISK",
+        "entityType": "evidence-sufficiency-assessment",
+        "recordVersion": "1.0.0",
+        "createdAt": "2026-09-02T11:01:00Z",
+        "projectId": "oap:project:ALPHA",
+        "outcomeId": "oap:outcome:ALPHA-TOC",
+        "boundaryIds": ["oap:authorization-boundary:ALPHA-CW101"],
+        "submissionId": "oap:evidence-submission:ALPHA-1",
+        "criterionId": "oap:outcome-criterion:ALPHA-RISK",
+        "auditorRoleAssignmentId": "oap:role-assignment:auditor",
+        "assessedAt": "2026-09-02T11:01:00Z",
+        "admissibility": "admissible",
+        "sufficiency": "sufficient",
+        "credibility": "credible",
+        "relevance": "relevant",
+        "currency": "current",
+        "rationale": "Fictional second criterion assessment.",
+        "evidencePackageReferenceIds": ["oap:external-package:CW101-RFDC"]
+      }
+    },
+    {
+      "op": "replace",
+      "path": "/records/7/criterionIds",
+      "value": ["oap:outcome-criterion:ALPHA-EVIDENCE", "oap:outcome-criterion:ALPHA-RISK"]
+    },
+    {
+      "op": "replace",
+      "path": "/records/8/criterionIds",
+      "value": ["oap:outcome-criterion:ALPHA-EVIDENCE", "oap:outcome-criterion:ALPHA-RISK"]
+    },
+    {
+      "op": "replace",
+      "path": "/records/11/criterionIds",
+      "value": ["oap:outcome-criterion:ALPHA-EVIDENCE", "oap:outcome-criterion:ALPHA-RISK"]
+    },
+    {
+      "op": "replace",
+      "path": "/records/24/criterionIds",
+      "value": ["oap:outcome-criterion:ALPHA-EVIDENCE", "oap:outcome-criterion:ALPHA-RISK"]
+    },
+    {
+      "op": "replace",
+      "path": "/records/26/assessmentIds",
+      "value": ["oap:sufficiency-assessment:ALPHA-1", "oap:sufficiency-assessment:ALPHA-RISK"]
+    },
+    {
+      "op": "replace",
+      "path": "/records/26/evidenceBasisIds",
+      "value": [
+        "oap:external-package:CW101-RFDC",
+        "oap:sufficiency-assessment:ALPHA-1",
+        "oap:sufficiency-assessment:ALPHA-RISK"
+      ]
+    }
+  ]
+}

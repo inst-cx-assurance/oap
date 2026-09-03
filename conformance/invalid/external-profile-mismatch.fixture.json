@@ -1,0 +1,6 @@
+{
+  "name": "falsified OCRS profile metadata",
+  "expectedCode": "EXTERNAL_PROFILE_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [{ "op": "replace", "path": "/records/23/sourceProfileVersion", "value": "9.0.0" }]
+}

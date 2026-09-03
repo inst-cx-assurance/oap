@@ -30,13 +30,13 @@
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "boundaryIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "submissionId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "assessmentIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "auditorRoleAssignmentId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
@@ -46,7 +46,7 @@
         },
         "conclusion": { "enum": ["evidence_sufficient", "evidence_insufficient", "indeterminate"] },
         "evidenceBasisIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "rationale": { "type": "string", "minLength": 1 }
       }

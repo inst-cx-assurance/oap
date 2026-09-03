@@ -216,6 +216,9 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
       ['conditionIds', ['authorization-condition']],
     ],
     'authorization-change': [
+      ['projectId', ['project-context']],
+      ['outcomeId', ['outcome']],
+      ['boundaryIds', ['authorization-boundary']],
       ['authorizationId', ['outcome-authorization']],
       ['changedByRoleAssignmentId', ['role-assignment']],
       ['replacementAuthorizationId', ['outcome-authorization']],
@@ -232,6 +235,17 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
   };
   for (const record of pkg.records)
     for (const [field, types] of referenceMap[record.entityType] ?? []) refs(record, field, types);
+  for (const declaration of pkg.records.filter((r) => r.entityType === 'residual-risk-declaration'))
+    for (const [index, item] of (Array.isArray(declaration.riskItems)
+      ? declaration.riskItems
+      : []
+    ).entries())
+      ref(
+        declaration,
+        `riskItems/${index}/ownerPartyId`,
+        (item as Record<string, unknown>).ownerPartyId,
+        ['party'],
+      );
 
   validateInventory(pkg, diagnostics);
   if (packageHash(pkg) !== pkg.manifest.contentHash.value)
@@ -257,14 +271,14 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
       (s) => s.status !== 'superseded' && ids(s.externalPackageReferenceIds).includes(external.id),
     );
     if (
-      external.validationStatus !== 'verified' ||
+      external.claimedValidationStatus === 'failed' ||
       (currentlyReliedUpon && external.supersessionStatus !== 'current')
     )
       add(
         diagnostics,
         'UNBOUND_EXTERNAL_EVIDENCE',
         `/${external.id}`,
-        'Relied-upon external evidence must be digest-bound, verified, and current.',
+        'Relied-upon external evidence must be digest-bound, not claimed failed, and current.',
         [external.id],
       );
     const retrieval = String(external.retrievalReference);
@@ -274,14 +288,6 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
         'UNSAFE_EXTERNAL_REFERENCE',
         `/${external.id}/retrievalReference`,
         'Unsafe external reference.',
-        [external.id],
-      );
-    if (external.validationStatus === 'failed')
-      add(
-        diagnostics,
-        'EXTERNAL_PACKAGE_HASH_MISMATCH',
-        `/${external.id}/validationStatus`,
-        'External package verification failed.',
         [external.id],
       );
   }
@@ -593,9 +599,8 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
         [authorization.id],
       );
     if (
-      positive &&
-      (authorization.directorRoleAssignmentId !== determination?.directorRoleAssignmentId ||
-        authorization.directorRoleAssignmentId !== acceptance?.directorRoleAssignmentId)
+      authorization.directorRoleAssignmentId !== determination?.directorRoleAssignmentId ||
+      authorization.directorRoleAssignmentId !== acceptance?.directorRoleAssignmentId
     )
       add(
         diagnostics,
@@ -664,9 +669,734 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
       );
   }
 
+  validateProfileIntegrity(pkg, byId, diagnostics);
+  validateEvidenceSemantics(pkg, byId, diagnostics);
+  validateDecisionChains(pkg, byId, diagnostics);
+  validateConditionIntegrity(pkg, byId, diagnostics);
+  validateAuthorizationLifecycle(pkg, byId, diagnostics);
+  validateDelegationIntegrity(pkg, byId, diagnostics);
   validateSupersession(pkg, byId, diagnostics);
   validateChronology(pkg, byId, diagnostics);
   return uniqueDiagnostics(diagnostics);
+}
+
+function validateProfileIntegrity(
+  pkg: OapPackage,
+  byId: Map<string, OapRecord>,
+  out: Diagnostic[],
+): void {
+  for (const [index, entry] of pkg.manifest.profiles.entries()) {
+    const declaration = byId.get(entry.profileId);
+    if (
+      !declaration ||
+      declaration.entityType !== 'profile-declaration' ||
+      declaration.id !== entry.profileId ||
+      declaration.profileVersion !== entry.profileVersion ||
+      declaration.oapVersion !== pkg.manifest.oapVersion
+    )
+      add(
+        out,
+        'PROFILE_DECLARATION_MISMATCH',
+        `/manifest/profiles/${index}`,
+        'Manifest profile identity, profile version, and OAP version must match its declaration.',
+        declaration ? [declaration.id] : [],
+      );
+    if (declaration?.status === 'approved' && declaration.id === 'oap:profile:icxa-provisional')
+      add(
+        out,
+        'PROFILE_STATUS_INVALID',
+        `/manifest/profiles/${index}`,
+        'The provisional ICxA profile cannot be represented as approved.',
+        [declaration.id],
+      );
+  }
+  const required = ['oap:profile:core'];
+  if (pkg.records.some((record) => record.entityType === 'external-package-reference'))
+    required.push('oap:profile:ocrs-input');
+  for (const id of required)
+    if (!pkg.manifest.profiles.some((entry) => entry.profileId === id))
+      add(
+        out,
+        'REQUIRED_PROFILE_MISSING',
+        '/manifest/profiles',
+        `Required profile ${id} is missing.`,
+      );
+}
+
+function validateEvidenceSemantics(
+  pkg: OapPackage,
+  byId: Map<string, OapRecord>,
+  out: Diagnostic[],
+): void {
+  const all = (type: string) => pkg.records.filter((record) => record.entityType === type);
+  const current = (record: OapRecord) =>
+    !pkg.records.some((candidate) => candidate.supersedes === record.id);
+  for (const oen of all('outcome-evidence-need')) {
+    if (oen.determinedBeforeEvidenceGeneration !== true)
+      add(
+        out,
+        'OEN_SEQUENCE_INVALID',
+        `/${oen.id}/determinedBeforeEvidenceGeneration`,
+        'OEN-before-evidence conformance requires an affirmative supplied determination.',
+        [oen.id],
+      );
+    for (const submission of all('evidence-submission').filter(
+      (item) => item.outcomeId === oen.outcomeId,
+    ))
+      for (const externalId of idList(submission.externalPackageReferenceIds)) {
+        const external = byId.get(externalId);
+        if (
+          external?.evidenceOrigin === 'generated_in_response_to_oen' &&
+          external.evidenceGeneratedAt &&
+          Date.parse(String(external.evidenceGeneratedAt)) < Date.parse(String(oen.createdAt))
+        )
+          add(
+            out,
+            'OEN_SEQUENCE_INVALID',
+            `/${oen.id}`,
+            'Evidence identified as generated in response to the OEN predates that OEN.',
+            [oen.id, external.id],
+          );
+      }
+  }
+
+  for (const submission of all('evidence-submission')) {
+    const outcome = byId.get(String(submission.outcomeId));
+    const oen = byId.get(String(outcome?.evidenceNeedId));
+    const submissionCriteria = idList(submission.criterionIds);
+    const oenCriteria = idList(oen?.criterionIds);
+    if (!oen || !sameSet(submissionCriteria, oenCriteria))
+      add(
+        out,
+        'INCOMPLETE_ASSESSMENT_COVERAGE',
+        `/${submission.id}/criterionIds`,
+        'Submission criteria must exactly cover the applicable OEN criteria; no exclusion model is approved.',
+        [submission.id, ...(oen ? [oen.id] : [])],
+      );
+    for (const criterionId of submissionCriteria) {
+      const criterion = byId.get(criterionId);
+      if (
+        criterion?.outcomeId !== submission.outcomeId ||
+        !idList(outcome?.criterionIds).includes(criterionId)
+      )
+        add(
+          out,
+          'ASSESSMENT_CONTEXT_MISMATCH',
+          `/${submission.id}/criterionIds`,
+          'Submitted criterion does not belong to the declared Outcome.',
+          [submission.id, criterionId],
+        );
+    }
+    for (const externalId of idList(submission.externalPackageReferenceIds)) {
+      const external = byId.get(externalId);
+      for (const boundaryId of idList(submission.boundaryIds)) {
+        const boundary = byId.get(boundaryId);
+        if (
+          external &&
+          boundary &&
+          !sameSet(idList(external.subjectIdentifiers), idList(boundary.subjectIds))
+        )
+          add(
+            out,
+            'EXTERNAL_SUBJECT_MISMATCH',
+            `/${external.id}/subjectIdentifiers`,
+            'External subjects must equal the declared OAP authorization-boundary mapping.',
+            [external.id, boundary.id],
+          );
+        if (
+          external &&
+          boundary &&
+          !sameSet(idList(external.boundaryIdentifiers), idList(boundary.externalBoundaryIds))
+        )
+          add(
+            out,
+            'EXTERNAL_BOUNDARY_MISMATCH',
+            `/${external.id}/boundaryIdentifiers`,
+            'External boundaries must equal the declared OAP authorization-boundary mapping.',
+            [external.id, boundary.id],
+          );
+      }
+    }
+    const assessments = all('evidence-sufficiency-assessment').filter(
+      (assessment) => assessment.submissionId === submission.id && current(assessment),
+    );
+    for (const criterionId of submissionCriteria) {
+      const matches = assessments.filter((assessment) => assessment.criterionId === criterionId);
+      if (matches.length !== 1)
+        add(
+          out,
+          'INCOMPLETE_ASSESSMENT_COVERAGE',
+          `/${submission.id}/criterionIds`,
+          `Criterion ${criterionId} requires exactly one current assessment; found ${matches.length}.`,
+          [submission.id, ...matches.map((item) => item.id)],
+        );
+    }
+  }
+
+  for (const assessment of all('evidence-sufficiency-assessment')) {
+    const submission = byId.get(String(assessment.submissionId));
+    if (!sameRecordContext(assessment, submission))
+      add(
+        out,
+        'ASSESSMENT_CONTEXT_MISMATCH',
+        `/${assessment.id}`,
+        'Assessment project, Outcome, and boundaries must equal its submission context.',
+        [assessment.id, ...(submission ? [submission.id] : [])],
+      );
+    const packages = idList(assessment.evidencePackageReferenceIds);
+    if (
+      packages.length === 0 ||
+      !packages.every((id) => idList(submission?.externalPackageReferenceIds).includes(id))
+    )
+      add(
+        out,
+        'ASSESSMENT_EVIDENCE_MISMATCH',
+        `/${assessment.id}/evidencePackageReferenceIds`,
+        'Assessment evidence packages must be a nonempty subset of its submission.',
+        [assessment.id, ...(submission ? [submission.id] : [])],
+      );
+  }
+
+  for (const evaluation of all('outcome-auditor-evaluation')) {
+    const submission = byId.get(String(evaluation.submissionId));
+    const applicable = all('evidence-sufficiency-assessment').filter(
+      (assessment) =>
+        assessment.submissionId === evaluation.submissionId &&
+        !pkg.records.some((candidate) => candidate.supersedes === assessment.id),
+    );
+    if (
+      !sameRecordContext(evaluation, submission) ||
+      applicable.some((assessment) => !sameRecordContext(evaluation, assessment))
+    )
+      add(
+        out,
+        'ASSESSMENT_CONTEXT_MISMATCH',
+        `/${evaluation.id}`,
+        'Evaluation, submission, and all applicable assessments must share one context.',
+        [evaluation.id],
+      );
+    if (
+      !sameSet(
+        idList(evaluation.assessmentIds),
+        applicable.map((item) => item.id),
+      )
+    )
+      add(
+        out,
+        'INCOMPLETE_ASSESSMENT_COVERAGE',
+        `/${evaluation.id}/assessmentIds`,
+        'Evaluation must reference the complete set of current assessments.',
+        [evaluation.id, ...applicable.map((item) => item.id)],
+      );
+    const requiredBasis = [
+      ...applicable.map((item) => item.id),
+      ...idList(submission?.externalPackageReferenceIds),
+    ];
+    if (!requiredBasis.every((id) => idList(evaluation.evidenceBasisIds).includes(id)))
+      add(
+        out,
+        'EVALUATION_BASIS_MISMATCH',
+        `/${evaluation.id}/evidenceBasisIds`,
+        'Evaluation basis must include every current assessment and submitted external package.',
+        [evaluation.id],
+      );
+    const expected =
+      applicable.length === 0
+        ? 'indeterminate'
+        : applicable.every(
+              (assessment) =>
+                assessment.admissibility === 'admissible' &&
+                assessment.sufficiency === 'sufficient' &&
+                assessment.credibility === 'credible' &&
+                assessment.relevance === 'relevant' &&
+                assessment.currency === 'current',
+            )
+          ? 'evidence_sufficient'
+          : applicable.some(
+                (assessment) =>
+                  assessment.admissibility === 'inadmissible' ||
+                  assessment.sufficiency === 'insufficient' ||
+                  assessment.credibility === 'not_credible' ||
+                  assessment.relevance === 'not_relevant' ||
+                  assessment.currency === 'stale',
+              )
+            ? 'evidence_insufficient'
+            : 'indeterminate';
+    if (evaluation.conclusion !== expected)
+      add(
+        out,
+        'AUDITOR_CONCLUSION_CONTRADICTION',
+        `/${evaluation.id}/conclusion`,
+        `Conclusion contradicts complete current assessment coverage; expected ${expected}.`,
+        [evaluation.id],
+      );
+  }
+}
+
+function validateDecisionChains(
+  pkg: OapPackage,
+  byId: Map<string, OapRecord>,
+  out: Diagnostic[],
+): void {
+  const externalFor = (submission?: OapRecord) => idList(submission?.externalPackageReferenceIds);
+  for (const declaration of pkg.records.filter(
+    (r) => r.entityType === 'residual-risk-declaration',
+  )) {
+    const submission = byId.get(String(declaration.submissionId));
+    if (!sameRecordContext(declaration, submission))
+      add(
+        out,
+        'RISK_CONTEXT_MISMATCH',
+        `/${declaration.id}`,
+        'Residual-risk declaration must share its submission context.',
+        [declaration.id],
+      );
+    const riskIds = objectList(declaration.riskItems).map((item) => String(item.riskId));
+    if (new Set(riskIds).size !== riskIds.length)
+      add(
+        out,
+        'DUPLICATE_RISK_ID',
+        `/${declaration.id}/riskItems`,
+        'Risk identifiers must be unique within a residual-risk declaration.',
+        [declaration.id],
+      );
+    for (const [index, item] of objectList(declaration.riskItems).entries()) {
+      const owner = byId.get(String(item.ownerPartyId));
+      if (!owner || !['person', 'organization'].includes(String(owner.partyType)))
+        add(
+          out,
+          'RISK_OWNER_INVALID',
+          `/${declaration.id}/riskItems/${index}/ownerPartyId`,
+          'Residual-risk owner must identify an existing person or organization.',
+          [declaration.id],
+        );
+    }
+  }
+  for (const determination of pkg.records.filter(
+    (r) => r.entityType === 'outcome-director-determination',
+  )) {
+    const evaluation = byId.get(String(determination.auditorEvaluationId));
+    const submission = byId.get(String(evaluation?.submissionId));
+    const declaration = byId.get(String(determination.residualRiskDeclarationId));
+    if (
+      !sameRecordContext(determination, evaluation) ||
+      !sameRecordContext(determination, submission) ||
+      !sameRecordContext(determination, declaration) ||
+      declaration?.submissionId !== submission?.id
+    )
+      add(
+        out,
+        'DECISION_CHAIN_MISMATCH',
+        `/${determination.id}`,
+        'Determination must use one evaluation, submission, risk declaration, and exact context.',
+        [determination.id],
+      );
+    if (
+      !declaration ||
+      declaration.submissionId !== submission?.id ||
+      !sameRecordContext(declaration, submission)
+    )
+      add(
+        out,
+        'RISK_DECLARATION_MISMATCH',
+        `/${determination.id}/residualRiskDeclarationId`,
+        'Determination must use the residual-risk declaration for its exact submission and context.',
+        [determination.id],
+      );
+    const required = [submission?.id, evaluation?.id, ...externalFor(submission)].filter(
+      (id): id is string => typeof id === 'string',
+    );
+    if (!required.every((id) => idList(determination.evidenceBasisIds).includes(id)))
+      add(
+        out,
+        'EVALUATION_BASIS_MISMATCH',
+        `/${determination.id}/evidenceBasisIds`,
+        'Determination basis must include its submission, evaluation, and submitted external packages.',
+        [determination.id],
+      );
+  }
+  for (const acceptance of pkg.records.filter((r) => r.entityType === 'residual-risk-acceptance')) {
+    const declaration = byId.get(String(acceptance.declarationId));
+    if (!sameRecordContext(acceptance, declaration))
+      add(
+        out,
+        'RISK_CONTEXT_MISMATCH',
+        `/${acceptance.id}`,
+        'Risk acceptance context must equal the accepted declaration.',
+        [acceptance.id],
+      );
+  }
+  for (const authorization of pkg.records.filter((r) => r.entityType === 'outcome-authorization')) {
+    const determination = byId.get(String(authorization.determinationId));
+    const evaluation = byId.get(String(authorization.auditorEvaluationId));
+    const declaration = byId.get(String(determination?.residualRiskDeclarationId));
+    const acceptance = byId.get(String(authorization.residualRiskAcceptanceId));
+    const submission = byId.get(String(evaluation?.submissionId));
+    if (authorization.auditorEvaluationId !== determination?.auditorEvaluationId)
+      add(
+        out,
+        'AUTHORIZATION_EVALUATION_MISMATCH',
+        `/${authorization.id}/auditorEvaluationId`,
+        'Authorization must use the exact evaluation used by its determination.',
+        [authorization.id],
+      );
+    if (acceptance?.declarationId !== determination?.residualRiskDeclarationId)
+      add(
+        out,
+        'AUTHORIZATION_ACCEPTANCE_MISMATCH',
+        `/${authorization.id}/residualRiskAcceptanceId`,
+        'Authorization must reference acceptance of the exact declaration used by its determination.',
+        [authorization.id],
+      );
+    if (
+      !sameRecordContext(authorization, evaluation) ||
+      !sameRecordContext(authorization, determination) ||
+      !sameRecordContext(authorization, declaration) ||
+      !sameRecordContext(authorization, acceptance) ||
+      declaration?.submissionId !== submission?.id
+    )
+      add(
+        out,
+        'RISK_CONTEXT_MISMATCH',
+        `/${authorization.id}`,
+        'Authorization, submission, risk, evaluation, and determination contexts must be identical.',
+        [authorization.id],
+      );
+    const required = [
+      submission?.id,
+      evaluation?.id,
+      declaration?.id,
+      determination?.id,
+      acceptance?.id,
+      ...externalFor(submission),
+    ].filter((id): id is string => typeof id === 'string');
+    if (!required.every((id) => idList(authorization.evidenceBasisIds).includes(id)))
+      add(
+        out,
+        'DECISION_CHAIN_MISMATCH',
+        `/${authorization.id}/evidenceBasisIds`,
+        'Authorization basis is incomplete for its exact decision chain.',
+        [authorization.id],
+      );
+  }
+}
+
+function validateConditionIntegrity(
+  pkg: OapPackage,
+  byId: Map<string, OapRecord>,
+  out: Diagnostic[],
+): void {
+  const authorizations = pkg.records.filter(
+    (record) => record.entityType === 'outcome-authorization',
+  );
+  const conditions = pkg.records.filter(
+    (record) => record.entityType === 'authorization-condition',
+  );
+  for (const authorization of authorizations) {
+    const linked = idList(authorization.conditionIds)
+      .map((id) => byId.get(id))
+      .filter(
+        (record): record is OapRecord =>
+          !!record && record.entityType === 'authorization-condition',
+      );
+    if (
+      authorization.decision === 'authorized_with_conditions' &&
+      !linked.some((condition) => condition.status === 'open')
+    )
+      add(
+        out,
+        'CONDITION_STATUS_CONTRADICTION',
+        `/${authorization.id}/conditionIds`,
+        'Conditional authorization requires at least one current open condition.',
+        [authorization.id],
+      );
+    for (const condition of linked) {
+      if (condition.authorizationId !== authorization.id)
+        add(
+          out,
+          'CONDITION_AUTHORIZATION_LINK_MISMATCH',
+          `/${condition.id}/authorizationId`,
+          'Authorization and condition links must be bidirectional.',
+          [authorization.id, condition.id],
+        );
+      if (!sameRecordContext(condition, authorization))
+        add(
+          out,
+          'CONDITION_CONTEXT_MISMATCH',
+          `/${condition.id}`,
+          'Condition context must exactly equal its authorization.',
+          [authorization.id, condition.id],
+        );
+      if (['cancelled', 'superseded'].includes(String(condition.status)))
+        add(
+          out,
+          'CONDITION_STATUS_CONTRADICTION',
+          `/${authorization.id}/conditionIds`,
+          'Cancelled or superseded conditions cannot be active authorization requirements.',
+          [authorization.id, condition.id],
+        );
+    }
+  }
+  for (const condition of conditions) {
+    const authorization = byId.get(String(condition.authorizationId));
+    if (!authorization || !idList(authorization.conditionIds).includes(condition.id))
+      add(
+        out,
+        'CONDITION_AUTHORIZATION_LINK_MISMATCH',
+        `/${condition.id}/authorizationId`,
+        'Condition authorization backlink must be reciprocated.',
+        [condition.id],
+      );
+    const validSources = new Set([
+      authorization?.id,
+      authorization?.determinationId,
+      byId.get(String(authorization?.determinationId))?.residualRiskDeclarationId,
+    ]);
+    if (!idList(condition.sourceRecordIds).some((id) => validSources.has(id)))
+      add(
+        out,
+        'CONDITION_CONTEXT_MISMATCH',
+        `/${condition.id}/sourceRecordIds`,
+        'Condition must cite its authorization, determination, or residual-risk basis.',
+        [condition.id],
+      );
+    if (
+      condition.status === 'verified_closed' &&
+      idList(condition.closureEvidencePackageReferenceIds).length === 0
+    )
+      add(
+        out,
+        'CONDITION_CLOSURE_EVIDENCE_REQUIRED',
+        `/${condition.id}/closureEvidencePackageReferenceIds`,
+        'Verified closure requires nonempty integrity-bound current closure evidence.',
+        [condition.id],
+      );
+    for (const id of idList(condition.closureEvidencePackageReferenceIds)) {
+      const evidence = byId.get(id);
+      if (
+        evidence?.entityType !== 'external-package-reference' ||
+        evidence.supersessionStatus !== 'current' ||
+        evidence.claimedValidationStatus === 'failed'
+      )
+        add(
+          out,
+          'CONDITION_CLOSURE_EVIDENCE_REQUIRED',
+          `/${condition.id}/closureEvidencePackageReferenceIds`,
+          'Closure evidence must be current and integrity-bound.',
+          [condition.id, id],
+        );
+      const mappedBoundaries = idList(condition.boundaryIds)
+        .map((boundaryId) => byId.get(boundaryId))
+        .filter((boundary): boundary is OapRecord => !!boundary);
+      const mappedSubjects = mappedBoundaries.flatMap((boundary) => idList(boundary.subjectIds));
+      const mappedExternalBoundaries = mappedBoundaries.flatMap((boundary) =>
+        idList(boundary.externalBoundaryIds),
+      );
+      if (
+        evidence?.entityType === 'external-package-reference' &&
+        (!sameSet(idList(evidence.subjectIdentifiers), mappedSubjects) ||
+          !sameSet(idList(evidence.boundaryIdentifiers), mappedExternalBoundaries))
+      )
+        add(
+          out,
+          'CONDITION_CLOSURE_EVIDENCE_MISMATCH',
+          `/${condition.id}/closureEvidencePackageReferenceIds`,
+          'Condition closure evidence subjects and external boundaries must match the authorization-boundary mapping.',
+          [condition.id, evidence.id],
+        );
+    }
+    if (
+      authorization &&
+      Date.parse(String(condition.dueDate)) < Date.parse(String(authorization.authorizedAt))
+    )
+      add(
+        out,
+        'CONDITION_CONTEXT_MISMATCH',
+        `/${condition.id}/dueDate`,
+        'Condition due date cannot predate authorization.',
+        [condition.id, authorization.id],
+      );
+  }
+}
+
+function validateAuthorizationLifecycle(
+  pkg: OapPackage,
+  byId: Map<string, OapRecord>,
+  out: Diagnostic[],
+): void {
+  for (const change of pkg.records.filter(
+    (record) => record.entityType === 'authorization-change',
+  )) {
+    const authorization = byId.get(String(change.authorizationId));
+    if (!sameRecordContext(change, authorization))
+      add(
+        out,
+        'AUTHORIZATION_CHANGE_CONTEXT_MISMATCH',
+        `/${change.id}`,
+        'Authorization change context must exactly equal the affected authorization.',
+        [change.id],
+      );
+    if (
+      authorization &&
+      Date.parse(String(change.changedAt)) < Date.parse(String(authorization.authorizedAt))
+    )
+      add(
+        out,
+        'AUTHORIZATION_CHANGE_CHRONOLOGY_INVALID',
+        `/${change.id}/changedAt`,
+        'Authorization change cannot predate authorization.',
+        [change.id, authorization.id],
+      );
+    const humanRequired = ['withdrawn', 'revoked', 'superseded'].includes(
+      String(change.changeType),
+    );
+    if (humanRequired || change.actorType === 'human_authority') {
+      if (change.generationMethod !== 'human_supplied')
+        add(
+          out,
+          'AUTHORIZATION_CHANGE_UNAUTHORIZED',
+          `/${change.id}/generationMethod`,
+          'Human lifecycle act must be supplied as a human record.',
+          [change.id],
+        );
+      checkRole(
+        change,
+        'changedByRoleAssignmentId',
+        'outcome_director',
+        change.changeType === 'revoked' ? 'revoke_authorization' : 'withdraw_authorization',
+        'changedAt',
+        byId,
+        out,
+        'AUTHORIZATION_CHANGE_UNAUTHORIZED',
+      );
+    } else if (
+      change.actorType !== 'system_detection' ||
+      change.generationMethod !== 'system_capture' ||
+      !['expired', 'reassessment_required'].includes(String(change.changeType))
+    )
+      add(
+        out,
+        'AUTHORIZATION_CHANGE_UNAUTHORIZED',
+        `/${change.id}`,
+        'System detection is limited to deterministic expiry or reassessment triggers.',
+        [change.id],
+      );
+    if (change.actorType === 'system_detection' && change.changedByRoleAssignmentId)
+      add(
+        out,
+        'AUTHORIZATION_CHANGE_UNAUTHORIZED',
+        `/${change.id}/changedByRoleAssignmentId`,
+        'A system-detected lifecycle event must not name a human decision maker.',
+        [change.id],
+      );
+    if (change.changeType === 'superseded') {
+      const replacement = byId.get(String(change.replacementAuthorizationId));
+      if (!replacement || replacement.supersedes !== authorization?.id)
+        add(
+          out,
+          'AUTHORIZATION_REPLACEMENT_MISMATCH',
+          `/${change.id}/replacementAuthorizationId`,
+          'Supersession requires a replacement authorization with a reciprocal supersedes link.',
+          [change.id],
+        );
+    }
+    if (
+      change.changeType === 'expired' &&
+      authorization?.validTo &&
+      Date.parse(String(change.changedAt)) < Date.parse(String(authorization.validTo))
+    )
+      add(
+        out,
+        'AUTHORIZATION_LIFECYCLE_CONTRADICTION',
+        `/${change.id}/changedAt`,
+        'Deterministic expiry cannot be recorded before the authorization validity end.',
+        [change.id, authorization.id],
+      );
+  }
+}
+
+function validateDelegationIntegrity(
+  pkg: OapPackage,
+  byId: Map<string, OapRecord>,
+  out: Diagnostic[],
+): void {
+  const delegations = pkg.records.filter((record) => record.entityType === 'delegation');
+  const edges = new Map<string, string>();
+  for (const delegation of delegations) {
+    const delegator = byId.get(String(delegation.delegatorRoleAssignmentId));
+    const delegate = byId.get(String(delegation.delegateRoleAssignmentId));
+    const delegatedScope = byId.get(String(delegation.authorityScopeId));
+    const delegatorScope = byId.get(String(delegator?.authorityScopeId));
+    if (delegate?.delegationId !== delegation.id)
+      add(
+        out,
+        'DELEGATION_LINK_MISMATCH',
+        `/${delegation.id}`,
+        'Delegation and delegate assignment links must be reciprocal.',
+        [delegation.id],
+      );
+    const delegateScope = byId.get(String(delegate?.authorityScopeId));
+    if (
+      !subset(idList(delegatedScope?.projectIds), idList(delegatorScope?.projectIds)) ||
+      !subset(idList(delegatedScope?.outcomeIds), idList(delegatorScope?.outcomeIds)) ||
+      !subset(idList(delegatedScope?.boundaryIds), idList(delegatorScope?.boundaryIds)) ||
+      !subset(idList(delegatedScope?.projectIds), idList(delegateScope?.projectIds)) ||
+      !subset(idList(delegatedScope?.outcomeIds), idList(delegateScope?.outcomeIds)) ||
+      !subset(idList(delegatedScope?.boundaryIds), idList(delegateScope?.boundaryIds))
+    )
+      add(
+        out,
+        'DELEGATION_SCOPE_EXPANSION',
+        `/${delegation.id}/authorityScopeId`,
+        'Delegated project, Outcome, and boundary scope must be subsets of delegator authority.',
+        [delegation.id],
+      );
+    if (
+      !subset(idList(delegatedScope?.permittedActions), idList(delegatorScope?.permittedActions)) ||
+      !subset(idList(delegatedScope?.permittedActions), idList(delegateScope?.permittedActions))
+    )
+      add(
+        out,
+        'DELEGATION_ACTION_EXPANSION',
+        `/${delegation.id}/authorityScopeId`,
+        'Delegated actions must be a subset of delegator permissions.',
+        [delegation.id],
+      );
+    const from = Date.parse(String(delegation.validFrom));
+    const to = delegation.validTo ? Date.parse(String(delegation.validTo)) : Infinity;
+    if (
+      !delegator ||
+      !delegate ||
+      delegator.role !== delegate.role ||
+      from < Date.parse(String(delegator.validFrom)) ||
+      from < Date.parse(String(delegate.validFrom)) ||
+      to > (delegator.validTo ? Date.parse(String(delegator.validTo)) : Infinity) ||
+      to > (delegate.validTo ? Date.parse(String(delegate.validTo)) : Infinity) ||
+      from > to
+    )
+      add(
+        out,
+        'DELEGATION_VALIDITY_INVALID',
+        `/${delegation.id}`,
+        'Delegation role and validity must remain within both human assignments.',
+        [delegation.id],
+      );
+    if (delegator && delegate) edges.set(delegator.id, delegate.id);
+  }
+  for (const start of edges.keys()) {
+    const visited = new Set<string>();
+    let cursor: string | undefined = start;
+    while (cursor && edges.has(cursor)) {
+      if (visited.has(cursor)) {
+        add(out, 'DELEGATION_CYCLE', '/records', 'Delegation graph contains a cycle.', [
+          ...visited,
+        ]);
+        break;
+      }
+      visited.add(cursor);
+      cursor = edges.get(cursor);
+    }
+  }
 }
 
 function checkRole(
@@ -717,11 +1447,84 @@ function checkRole(
       `Role lacks ${action} authority for the record context.`,
       [record.id, assignment.id],
     );
+  if (assignment.delegationId) {
+    const delegation = byId.get(String(assignment.delegationId));
+    if (
+      !delegation ||
+      delegation.status !== 'active' ||
+      delegation.delegateRoleAssignmentId !== assignment.id ||
+      at < Date.parse(String(delegation.validFrom)) ||
+      (delegation.validTo && at > Date.parse(String(delegation.validTo)))
+    )
+      add(
+        out,
+        'DELEGATION_VALIDITY_INVALID',
+        `/${record.id}/${field}`,
+        'Delegation is not active and reciprocal at action time.',
+        [record.id, assignment.id],
+      );
+    const delegatedScope = byId.get(String(delegation?.authorityScopeId));
+    if (
+      !delegatedScope ||
+      !idsOrStrings(delegatedScope.permittedActions).includes(action) ||
+      !idsOrStrings(delegatedScope.projectIds).includes(String(record.projectId)) ||
+      !idsOrStrings(delegatedScope.outcomeIds).includes(String(record.outcomeId)) ||
+      !ids(record.boundaryIds).every((id) => idsOrStrings(delegatedScope.boundaryIds).includes(id))
+    )
+      add(
+        out,
+        'AUTHORITY_OUT_OF_SCOPE',
+        `/${record.id}/${field}`,
+        `Delegation lacks ${action} authority for the record context.`,
+        [record.id, assignment.id, ...(delegation ? [delegation.id] : [])],
+      );
+  }
   const conflicts = [...byId.values()].filter(
     (r) =>
       r.entityType === 'conflict-of-interest-declaration' && r.roleAssignmentId === assignment.id,
   );
-  if (!conflicts.length || conflicts.some((c) => c.status === 'unresolved'))
+  const current = conflicts.filter(
+    (declaration) =>
+      ![...byId.values()].some((candidate) => candidate.supersedes === declaration.id),
+  );
+  const applicable = current.filter(
+    (declaration) =>
+      Date.parse(String(declaration.declaredAt)) <= at &&
+      (!declaration.validTo || at <= Date.parse(String(declaration.validTo))),
+  );
+  const supersededApplicable = conflicts.filter(
+    (declaration) =>
+      [...byId.values()].some((candidate) => candidate.supersedes === declaration.id) &&
+      Date.parse(String(declaration.declaredAt)) <= at &&
+      (!declaration.validTo || at <= Date.parse(String(declaration.validTo))),
+  );
+  if (applicable.length === 0 && supersededApplicable.length > 0)
+    add(
+      out,
+      'CONFLICT_DECLARATION_SUPERSEDED',
+      `/${record.id}/${field}`,
+      'Only superseded conflict declarations exist for this action.',
+      [record.id, assignment.id],
+    );
+  if (current.length && applicable.length === 0)
+    add(
+      out,
+      'CONFLICT_DECLARATION_INVALID_AT_ACTION_TIME',
+      `/${record.id}/${field}`,
+      'Conflict declaration was not current at action time.',
+      [record.id, assignment.id],
+    );
+  if (
+    applicable.some((declaration) => declaration.status === 'mitigated' && !declaration.mitigation)
+  )
+    add(
+      out,
+      'CONFLICT_MITIGATION_REQUIRED',
+      `/${record.id}/${field}`,
+      'A mitigated conflict declaration requires a supplied mitigation.',
+      [record.id, assignment.id],
+    );
+  if (!applicable.length || applicable.some((c) => c.status === 'unresolved'))
     add(
       out,
       'UNRESOLVED_CONFLICT_OF_INTEREST',
@@ -794,6 +1597,7 @@ function validateSupersession(
   byId: Map<string, OapRecord>,
   out: Diagnostic[],
 ): void {
+  const successors = new Map<string, OapRecord[]>();
   for (const record of pkg.records)
     if (record.supersedes) {
       const prior = byId.get(record.supersedes);
@@ -805,7 +1609,64 @@ function validateSupersession(
           'Invalid supersession relationship.',
           [record.id],
         );
+      if (prior && compareVersion(record.recordVersion, prior.recordVersion) <= 0)
+        add(
+          out,
+          'SUPERSESSION_VERSION_INVALID',
+          `/${record.id}/recordVersion`,
+          'A successor record version must progress beyond the superseded record version.',
+          [record.id, prior.id],
+        );
+      if (prior && Date.parse(record.createdAt) < Date.parse(prior.createdAt))
+        add(
+          out,
+          'SUPERSESSION_VERSION_INVALID',
+          `/${record.id}/createdAt`,
+          'A successor cannot predate the superseded record.',
+          [record.id, prior.id],
+        );
+      const list = successors.get(record.supersedes) ?? [];
+      list.push(record);
+      successors.set(record.supersedes, list);
     }
+  for (const [prior, values] of successors)
+    if (values.length > 1)
+      add(
+        out,
+        'MULTIPLE_CURRENT_SUCCESSORS',
+        '/records',
+        `Record ${prior} has more than one successor.`,
+        [prior, ...values.map((value) => value.id)],
+      );
+  for (const start of pkg.records) {
+    const visited = new Set<string>();
+    let cursor: OapRecord | undefined = start;
+    while (cursor?.supersedes) {
+      if (visited.has(cursor.id)) {
+        add(out, 'SUPERSESSION_CYCLE', `/${start.id}`, 'Supersession graph contains a cycle.', [
+          ...visited,
+        ]);
+        break;
+      }
+      visited.add(cursor.id);
+      cursor = byId.get(cursor.supersedes);
+    }
+  }
+  for (const record of pkg.records) {
+    const item = pkg.manifest.inventory.find((entry) => entry.recordId === record.id);
+    const expectedStatus = successors.has(record.id) ? 'superseded' : 'current';
+    if (
+      item?.supersessionStatus !== expectedStatus ||
+      item?.supersedesRecordId !== record.supersedes
+    )
+      add(
+        out,
+        'SUPERSESSION_INVENTORY_MISMATCH',
+        '/manifest/inventory',
+        'Inventory supersession status or predecessor link does not match the record graph.',
+        [record.id],
+      );
+  }
   const activeAuthorizations = pkg.records.filter(
     (r) =>
       r.entityType === 'outcome-authorization' &&
@@ -826,21 +1687,6 @@ function validateSupersession(
       '/records',
       'Multiple current authorization records exist for one context without supersession.',
     );
-  for (const change of pkg.records.filter(
-    (r) =>
-      r.entityType === 'authorization-change' &&
-      ['withdrawn', 'revoked'].includes(String(r.changeType)),
-  )) {
-    const inventory = pkg.manifest.inventory.find((x) => x.recordId === change.authorizationId);
-    if (inventory?.supersessionStatus === 'current')
-      add(
-        out,
-        'WITHDRAWN_AUTHORIZATION_ACTIVE',
-        `/manifest/inventory/${change.authorizationId}`,
-        'Withdrawn or revoked authorization is declared current.',
-        [String(change.authorizationId), change.id],
-      );
-  }
 }
 
 function validateChronology(
@@ -848,49 +1694,146 @@ function validateChronology(
   byId: Map<string, OapRecord>,
   out: Diagnostic[],
 ): void {
-  const links: Array<[string, string, string]> = [
-    ['outcome-auditor-evaluation', 'submissionId', 'evaluatedAt'],
-    ['outcome-director-determination', 'auditorEvaluationId', 'determinedAt'],
-    ['residual-risk-acceptance', 'declarationId', 'acceptedAt'],
-    ['outcome-authorization', 'determinationId', 'authorizedAt'],
-  ];
-  for (const [type, field, time] of links)
-    for (const record of pkg.records.filter((r) => r.entityType === type)) {
-      const prior = byId.get(String(record[field]));
-      const priorTime = prior
-        ? Date.parse(
-            String(prior.evaluatedAt ?? prior.submittedAt ?? prior.declaredAt ?? prior.createdAt),
-          )
-        : NaN;
-      if (Number.isFinite(priorTime) && Date.parse(String(record[time])) < priorTime)
-        add(
-          out,
-          'INVALID_CHRONOLOGY',
-          `/${record.id}/${time}`,
-          'Record predates its required basis.',
-          [record.id, prior!.id],
-        );
-    }
+  const ordered = (
+    later: OapRecord,
+    laterField: string,
+    earlier: OapRecord | undefined,
+    earlierField: string,
+  ) => {
+    if (
+      earlier &&
+      Date.parse(String(later[laterField])) < Date.parse(String(earlier[earlierField]))
+    )
+      add(
+        out,
+        'INVALID_CHRONOLOGY',
+        `/${later.id}/${laterField}`,
+        `${later.entityType} predates required basis ${earlier.entityType}.`,
+        [later.id, earlier.id],
+      );
+  };
+  for (const assessment of pkg.records.filter(
+    (record) => record.entityType === 'evidence-sufficiency-assessment',
+  ))
+    ordered(assessment, 'assessedAt', byId.get(String(assessment.submissionId)), 'submittedAt');
+  for (const evaluation of pkg.records.filter(
+    (record) => record.entityType === 'outcome-auditor-evaluation',
+  ))
+    for (const assessmentId of idList(evaluation.assessmentIds))
+      ordered(evaluation, 'evaluatedAt', byId.get(assessmentId), 'assessedAt');
+  for (const determination of pkg.records.filter(
+    (record) => record.entityType === 'outcome-director-determination',
+  )) {
+    ordered(
+      determination,
+      'determinedAt',
+      byId.get(String(determination.auditorEvaluationId)),
+      'evaluatedAt',
+    );
+    ordered(
+      determination,
+      'determinedAt',
+      byId.get(String(determination.residualRiskDeclarationId)),
+      'declaredAt',
+    );
+  }
+  for (const acceptance of pkg.records.filter(
+    (record) => record.entityType === 'residual-risk-acceptance',
+  )) {
+    const determination = pkg.records.find(
+      (record) =>
+        record.entityType === 'outcome-director-determination' &&
+        record.residualRiskDeclarationId === acceptance.declarationId &&
+        sameRecordContext(record, acceptance),
+    );
+    ordered(acceptance, 'acceptedAt', determination, 'determinedAt');
+  }
+  for (const authorization of pkg.records.filter(
+    (record) => record.entityType === 'outcome-authorization',
+  ))
+    ordered(
+      authorization,
+      'authorizedAt',
+      byId.get(String(authorization.residualRiskAcceptanceId)),
+      'acceptedAt',
+    );
+}
+
+export type AuthorizationEffectiveness =
+  | 'effective'
+  | 'ineffective_decision'
+  | 'ineffective_expired'
+  | 'ineffective_withdrawn'
+  | 'ineffective_revoked'
+  | 'ineffective_superseded';
+
+export function classifyAuthorizationEffectiveness(
+  pkg: OapPackage,
+  authorizationId: string,
+  evaluationTime: string,
+): AuthorizationEffectiveness {
+  const authorization = pkg.records.find(
+    (record) => record.id === authorizationId && record.entityType === 'outcome-authorization',
+  );
+  if (
+    !authorization ||
+    !['authorized', 'authorized_with_conditions'].includes(String(authorization.decision))
+  )
+    return 'ineffective_decision';
+  const changes = pkg.records
+    .filter(
+      (record) =>
+        record.entityType === 'authorization-change' &&
+        record.authorizationId === authorizationId &&
+        Date.parse(String(record.changedAt)) <= Date.parse(evaluationTime),
+    )
+    .sort(
+      (left, right) => Date.parse(String(right.changedAt)) - Date.parse(String(left.changedAt)),
+    );
+  const terminal = changes.find((change) =>
+    ['withdrawn', 'revoked', 'superseded', 'expired'].includes(String(change.changeType)),
+  );
+  if (terminal) return `ineffective_${String(terminal.changeType)}` as AuthorizationEffectiveness;
+  if (Date.parse(evaluationTime) > Date.parse(String(authorization.validTo)))
+    return 'ineffective_expired';
+  return 'effective';
 }
 
 function schemaDiagnostic(error: ErrorObject): Diagnostic {
   const missing = (error.params as { missingProperty?: string }).missingProperty;
+  const nonemptyCode =
+    error.keyword === 'minItems' && error.instancePath.endsWith('/assessmentIds')
+      ? 'INCOMPLETE_ASSESSMENT_COVERAGE'
+      : error.keyword === 'minItems' && error.instancePath.endsWith('/evidenceBasisIds')
+        ? 'EMPTY_EVIDENCE_BASIS'
+        : error.keyword === 'minItems' &&
+            error.instancePath.endsWith('/evidencePackageReferenceIds')
+          ? 'ASSESSMENT_EVIDENCE_MISMATCH'
+          : error.keyword === 'minItems' && error.instancePath.endsWith('/criterionIds')
+            ? 'INCOMPLETE_ASSESSMENT_COVERAGE'
+            : error.keyword === 'minItems' &&
+                error.instancePath.endsWith('/closureEvidencePackageReferenceIds')
+              ? 'CONDITION_CLOSURE_EVIDENCE_REQUIRED'
+              : undefined;
   const code =
-    error.instancePath === '/schemaVersion'
+    nonemptyCode ??
+    (error.instancePath === '/schemaVersion'
       ? 'UNSUPPORTED_SCHEMA_VERSION'
       : error.instancePath.endsWith('/retrievalReference')
         ? 'UNSAFE_EXTERNAL_REFERENCE'
         : missing === 'recordVersion'
           ? 'MISSING_RECORD_VERSION'
-          : missing &&
-              [
-                'ownerRoleAssignmentId',
-                'dueDate',
-                'monitoringRequirements',
-                'escalationRequirements',
-              ].includes(missing)
-            ? 'CONDITION_INCOMPLETE'
-            : 'SCHEMA_INVALID';
+          : missing === 'mitigation'
+            ? 'CONFLICT_MITIGATION_REQUIRED'
+            : missing &&
+                [
+                  'ownerRoleAssignmentId',
+                  'dueDate',
+                  'monitoringRequirements',
+                  'escalationRequirements',
+                ].includes(missing)
+              ? 'CONDITION_INCOMPLETE'
+              : 'SCHEMA_INVALID');
   return {
     code,
     path: error.instancePath || '/',
@@ -913,6 +1856,35 @@ function ids(value: unknown): string[] {
 }
 function idsOrStrings(value: unknown): string[] {
   return ids(value);
+}
+function idList(value: unknown): string[] {
+  return ids(value);
+}
+function objectList(value: unknown): Array<Record<string, unknown>> {
+  return Array.isArray(value)
+    ? value.filter((item): item is Record<string, unknown> => !!item && typeof item === 'object')
+    : [];
+}
+function sameRecordContext(left: OapRecord, right?: OapRecord): boolean {
+  return (
+    !!right &&
+    left.projectId === right.projectId &&
+    left.outcomeId === right.outcomeId &&
+    sameSet(idList(left.boundaryIds), idList(right.boundaryIds))
+  );
+}
+function subset(left: string[], right: string[]): boolean {
+  return left.every((value) => right.includes(value));
+}
+function compareVersion(left: string, right: string): number {
+  const parse = (value: string) => value.split('-', 1)[0].split('.').map(Number);
+  const a = parse(left);
+  const b = parse(right);
+  for (let index = 0; index < 3; index++) {
+    const difference = (a[index] ?? 0) - (b[index] ?? 0);
+    if (difference !== 0) return difference;
+  }
+  return left.localeCompare(right);
 }
 function sameSet(a: string[], b: string[]): boolean {
   return a.length === b.length && [...a].sort().every((x, i) => x === [...b].sort()[i]);

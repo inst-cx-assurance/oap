@@ -1,0 +1,8 @@
+{
+  "name": "falsified OCRS project metadata",
+  "expectedCode": "EXTERNAL_PROJECT_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/projectIdentifier", "value": "ocrs:project:FALSE" }
+  ]
+}

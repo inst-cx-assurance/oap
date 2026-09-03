@@ -1,0 +1,8 @@
+{
+  "name": "superseded OCRS package claimed as current verification basis",
+  "expectedCode": "EXTERNAL_SUPERSESSION_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/supersessionStatus", "value": "superseded" }
+  ]
+}

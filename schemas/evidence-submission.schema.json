@@ -26,13 +26,13 @@
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"
         },
         "boundaryIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "externalPackageReferenceIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "criterionIds": {
-          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/idArray"
+          "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/nonEmptyIdArray"
         },
         "submittedByRoleAssignmentId": {
           "$ref": "https://spec.oap.example/v0.1/schemas/base-record.schema.json#/$defs/id"

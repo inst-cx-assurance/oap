@@ -1,0 +1,8 @@
+{
+  "name": "falsified OCRS qualification metadata",
+  "expectedCode": "EXTERNAL_QUALIFICATION_MISMATCH",
+  "validationMode": "external-ocrs-contract",
+  "mutations": [
+    { "op": "replace", "path": "/records/23/qualifications", "value": ["False qualification"] }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "one record has multiple current successors",
+  "expectedCode": "MULTIPLE_CURRENT_SUCCESSORS",
+  "mutations": [
+    {
+      "op": "add",
+      "path": "/records/31",
+      "value": {
+        "id": "oap:party:owner-successor-a",
+        "entityType": "party",
+        "recordVersion": "2.0.0",
+        "createdAt": "2026-09-03T00:00:00Z",
+        "supersedes": "oap:party:owner-org",
+        "name": "Successor A",
+        "partyType": "organization"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/records/32",
+      "value": {
+        "id": "oap:party:owner-successor-b",
+        "entityType": "party",
+        "recordVersion": "3.0.0",
+        "createdAt": "2026-09-04T00:00:00Z",
+        "supersedes": "oap:party:owner-org",
+        "name": "Successor B",
+        "partyType": "organization"
+      }
+    }
+  ]
+}
