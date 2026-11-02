@@ -1617,12 +1617,12 @@ function validateSupersession(
           'A successor record version must progress beyond the superseded record version.',
           [record.id, prior.id],
         );
-      if (prior && Date.parse(record.createdAt) < Date.parse(prior.createdAt))
+      if (prior && Date.parse(record.createdAt) <= Date.parse(prior.createdAt))
         add(
           out,
           'SUPERSESSION_VERSION_INVALID',
           `/${record.id}/createdAt`,
-          'A successor cannot predate the superseded record.',
+          'A successor must have a strictly later timestamp than the superseded record.',
           [record.id, prior.id],
         );
       const list = successors.get(record.supersedes) ?? [];
@@ -1876,15 +1876,37 @@ function sameRecordContext(left: OapRecord, right?: OapRecord): boolean {
 function subset(left: string[], right: string[]): boolean {
   return left.every((value) => right.includes(value));
 }
-function compareVersion(left: string, right: string): number {
-  const parse = (value: string) => value.split('-', 1)[0].split('.').map(Number);
+export function compareVersion(left: string, right: string): number {
+  const parse = (value: string) => {
+    const [withoutBuild] = value.split('+', 1);
+    const [core, prerelease] = withoutBuild.split('-', 2);
+    return { numbers: core.split('.').map(Number), prerelease: prerelease?.split('.') };
+  };
   const a = parse(left);
   const b = parse(right);
   for (let index = 0; index < 3; index++) {
-    const difference = (a[index] ?? 0) - (b[index] ?? 0);
+    const difference = (a.numbers[index] ?? 0) - (b.numbers[index] ?? 0);
     if (difference !== 0) return difference;
   }
-  return left.localeCompare(right);
+  if (!a.prerelease && !b.prerelease) return 0;
+  if (!a.prerelease) return 1;
+  if (!b.prerelease) return -1;
+  for (let index = 0; index < Math.max(a.prerelease.length, b.prerelease.length); index++) {
+    const leftId = a.prerelease[index];
+    const rightId = b.prerelease[index];
+    if (leftId === undefined) return -1;
+    if (rightId === undefined) return 1;
+    if (leftId === rightId) continue;
+    const leftNumeric = /^\\d+$/.test(leftId);
+    const rightNumeric = /^\\d+$/.test(rightId);
+    if (leftNumeric && rightNumeric) {
+      const delta = BigInt(leftId) - BigInt(rightId);
+      return delta < 0n ? -1 : delta > 0n ? 1 : 0;
+    }
+    if (leftNumeric !== rightNumeric) return leftNumeric ? -1 : 1;
+    return leftId < rightId ? -1 : 1;
+  }
+  return 0;
 }
 function sameSet(a: string[], b: string[]): boolean {
   return a.length === b.length && [...a].sort().every((x, i) => x === [...b].sort()[i]);
