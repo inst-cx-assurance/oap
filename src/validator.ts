@@ -409,7 +409,7 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
       );
     const submitterRole = get(submission?.submittedByRoleAssignmentId);
     const auditorRole = get(evaluation.auditorRoleAssignmentId);
-    if (submitterRole?.partyId === auditorRole?.partyId)
+    if (submitterRole?.partyId && auditorRole?.partyId && submitterRole.partyId === auditorRole.partyId)
       add(
         diagnostics,
         'EVIDENCE_EVALUATION_ROLE_CONFLICT',
