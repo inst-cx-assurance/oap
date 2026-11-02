@@ -1,5 +1,7 @@
 # Outcome Assurance Protocol (OAP) v0.1
 
+**Repository updating authority:** [Jav EBRA @ JEPROGRAMS](https://github.com/jeprograms) — ICxA Chairman Global Digitalization. See [governance](GOVERNANCE.md).
+
 OAP is a draft, experimental, independently implementable Level 1 exchange protocol for recording the controlled Outcome Assurance process. It represents evidence-package submission, independent Outcome Auditor evaluation, Outcome Director determination and residual-risk acceptance, and human Outcome Authorization without allowing software to perform those human functions.
 
 OAP is separate from OCRS. An exact OCRS package may be referenced as evidence input; an OCRS result is never authorization. The reference implementation validates structure, integrity, authority, sequencing, and contradictions. It does not assess evidence professionally, recommend authorization, accept risk, or authorize an outcome.
