@@ -1,1 +1,5 @@
-Normative specification text in this directory is not covered by the repository-root Apache-2.0 license. Publication and reuse terms for the specification text are reserved for separate ICxA authorization. The root license applies to reference software, schemas, fixtures, tests, and machine-readable examples. ICxA trademarks and certification marks are not licensed.
+# Normative specification rights — proposed licensing notice
+
+**DRAFT — NOT AN EFFECTIVE LICENSE.**
+
+The normative specification text in this directory is reserved for ICxA's separately approved publication and reuse terms. Access for reading does not itself authorize copying, republication, derivative specifications or use of ICxA certification marks. The proposed internal evaluation permission for reference software and machine-readable technical assets does not extend automatically to normative prose. Commercial implementation and public distribution will require the applicable final written ICxA commercial license, subject to its actual scope.
