@@ -1879,7 +1879,9 @@ function subset(left: string[], right: string[]): boolean {
 export function compareVersion(left: string, right: string): number {
   const parse = (value: string) => {
     const [withoutBuild] = value.split('+', 1);
-    const [core, prerelease] = withoutBuild.split('-', 2);
+    const dashIndex = withoutBuild.indexOf('-');
+    const core = dashIndex < 0 ? withoutBuild : withoutBuild.slice(0, dashIndex);
+    const prerelease = dashIndex < 0 ? undefined : withoutBuild.slice(dashIndex + 1);
     return { numbers: core.split('.').map(Number), prerelease: prerelease?.split('.') };
   };
   const a = parse(left);
