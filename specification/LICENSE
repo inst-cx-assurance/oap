@@ -1,5 +1,5 @@
-# Normative specification rights — proposed licensing notice
+# ICxA Normative Specification — Rights Reserved
 
-**DRAFT — NOT AN EFFECTIVE LICENSE.**
+The normative specification prose in this directory is published for reading and technical reference. It is NOT covered by the root evaluation license's reproduction and modification permissions. Any copying, modification, republication, redistribution, or creation of derivative specification text requires separate written ICxA permission, except as permitted by applicable law. Implementing the underlying ideas or interfaces without copying protected expression is a distinct matter. ICxA marks, endorsement, and certification require separate written authorization.
 
-The normative specification text in this directory is reserved for ICxA's separately approved publication and reuse terms. Access for reading does not itself authorize copying, republication, derivative specifications or use of ICxA certification marks. The proposed internal evaluation permission for reference software and machine-readable technical assets does not extend automatically to normative prose. Commercial implementation and public distribution will require the applicable final written ICxA commercial license, subject to its actual scope.
+See the repository root LICENSE for terms governing the separately licensed reference technical assets.
