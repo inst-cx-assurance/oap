@@ -1913,7 +1913,10 @@ export function compareVersion(left: string, right: string): number {
   return 0;
 }
 function sameSet(a: string[], b: string[]): boolean {
-  return a.length === b.length && (() => { const sortedA = [...a].sort(); const sortedB = [...b].sort(); return sortedA.every((x, i) => x === sortedB[i]); })();
+  if (a.length !== b.length) return false;
+  const sortedA = [...a].sort();
+  const sortedB = [...b].sort();
+  return sortedA.every((value, index) => value === sortedB[index]);
 }
 function uniqueDiagnostics(values: Diagnostic[]): Diagnostic[] {
   const seen = new Set<string>();
