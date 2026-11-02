@@ -4,7 +4,7 @@ OAP is a draft, experimental, independently implementable Level 1 exchange proto
 
 OAP is separate from OCRS. An exact OCRS package may be referenced as evidence input; an OCRS result is never authorization. The reference implementation validates structure, integrity, authority, sequencing, and contradictions. It does not assess evidence professionally, recommend authorization, accept risk, or authorize an outcome.
 
-This private draft is not legally open for redistribution or vendor implementation until licenses are approved. It does not establish ICxA conformity, certification, competence, legal authority, project readiness, or capital-drawdown entitlement.
+**Licensing:** Covered reference technical assets may be used for free internal noncommercial evaluation, development and testing under the root `LICENSE`. Commercial use, production deployment and public distribution require a separate written ICxA commercial license for eligible active Corporate Members. Membership alone does not grant commercial rights. Normative specification prose is separately reserved under `specification/LICENSE`. Branding and certification require separate authorization. These are source-available, not OSI open-source, terms.
 
 ## Commands
 

@@ -1,5 +1,28 @@
-LICENSE PLACEHOLDER
+# ICxA OCRS/OAP Evaluation and Commercial Licensing Terms
+Effective date: 2 November 2026
+Licensor: Institute of Commissioning & Assurance (ICxA)
 
-No permission to copy, modify, redistribute, or implement this draft is granted by this placeholder.
-Specification, code, schema, example, test, patent, attribution, disclaimer, trademark, and
-certification terms require ICxA legal approval before public release.
+## 1. Scope
+These terms apply to the reference code, machine-readable schemas, examples, fixtures, and automated tests made available in this repository, only insofar as ICxA owns or is authorized to license the applicable rights. Normative specification prose in `specification/` is separately reserved. Third-party components remain subject to their own licenses.
+
+## 2. Free noncommercial evaluation license
+Subject to these terms, ICxA grants a non-exclusive, worldwide, royalty-free, revocable license to access, copy, modify, and execute the covered materials solely for internal, noncommercial learning, research, prototype development, interoperability evaluation, and testing. You may share modified copies privately with your own personnel or contracted evaluators solely for those purposes, provided they comply with these terms and preserve copyright and licensing notices. No public distribution is authorized by this evaluation license.
+
+## 3. Commercial use and public distribution
+The evaluation license DOES NOT authorize commercial use, production operation or deployment, provision of a product or service to customers, incorporation into a commercially offered product, or public distribution of copies or derivatives of the covered materials.
+
+Before undertaking any such activity, obtain a separate written commercial license issued by ICxA. Eligibility for that license requires an active ICxA Corporate Membership. Membership by itself does not grant commercial rights; rights arise only from the separate written commercial license. Commercial terms are provided directly by ICxA.
+
+## 4. Reserved rights and no endorsement
+All rights not expressly granted are reserved. No rights are granted to use ICxA names, trademarks, logos, certification or conformity marks, or to imply endorsement or official ICxA certification. Those require separate written permission. These terms do not grant patent rights beyond any rights expressly included in a separately signed agreement.
+
+## 5. Notices and termination
+Retain existing attribution, copyright and license notices in copies. The evaluation grant terminates upon material breach if not remedied within 30 days of written notice; after termination, cease use and distribution and delete copies except those retention requirements imposed by applicable law. ICxA may revise terms prospectively; revisions do not retrospectively alter valid permissions already granted for copies received under these terms.
+
+## 6. Disclaimer
+The covered materials are provided "AS IS", without warranties of any kind to the extent permitted by law. They do not confer professional authority, outcome authorization, certification or a claim of project readiness. Liability is limited to the maximum extent permitted by applicable law.
+
+## 7. License enquiries
+For corporate licensing and permissions, contact ICxA through https://icxa.net/.
+
+This is a source-available evaluation license with commercial restrictions; it is NOT an OSI-approved open-source license.
