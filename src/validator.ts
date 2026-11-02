@@ -1579,8 +1579,11 @@ function validateInventory(pkg: OapPackage, out: Diagnostic[]): void {
       '/manifest/inventory',
       'Manifest inventory is not the exact record inventory.',
     );
+  const inventoryByRecordId = new Map(
+    pkg.manifest.inventory.map((entry) => [entry.recordId, entry]),
+  );
   for (const record of pkg.records) {
-    const item = pkg.manifest.inventory.find((entry) => entry.recordId === record.id);
+    const item = inventoryByRecordId.get(record.id);
     if (
       record.entityType === 'external-package-reference' &&
       record.supersessionStatus === 'superseded' &&
