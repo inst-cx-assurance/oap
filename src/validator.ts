@@ -1579,11 +1579,8 @@ function validateInventory(pkg: OapPackage, out: Diagnostic[]): void {
       '/manifest/inventory',
       'Manifest inventory is not the exact record inventory.',
     );
-  const inventoryByRecordId = new Map(
-    pkg.manifest.inventory.map((entry) => [entry.recordId, entry]),
-  );
   for (const record of pkg.records) {
-    const item = inventoryByRecordId.get(record.id);
+    const item = pkg.manifest.inventory.find((entry) => entry.recordId === record.id);
     if (
       record.entityType === 'external-package-reference' &&
       record.supersessionStatus === 'superseded' &&
@@ -1916,10 +1913,7 @@ export function compareVersion(left: string, right: string): number {
   return 0;
 }
 function sameSet(a: string[], b: string[]): boolean {
-  if (a.length !== b.length) return false;
-  const sortedA = [...a].sort();
-  const sortedB = [...b].sort();
-  return sortedA.every((value, index) => value === sortedB[index]);
+  return a.length === b.length && [...a].sort().every((x, i) => x === [...b].sort()[i]);
 }
 function uniqueDiagnostics(values: Diagnostic[]): Diagnostic[] {
   const seen = new Set<string>();
