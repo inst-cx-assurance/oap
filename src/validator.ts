@@ -1881,14 +1881,36 @@ function subset(left: string[], right: string[]): boolean {
   return left.every((value) => right.includes(value));
 }
 function compareVersion(left: string, right: string): number {
-  const parse = (value: string) => value.split('-', 1)[0].split('.').map(Number);
+  const parse = (value: string) => {
+    const withoutBuild = value.split('+')[0];
+    const dash = withoutBuild.indexOf('-');
+    return {
+      core: (dash < 0 ? withoutBuild : withoutBuild.slice(0, dash)).split('.').map(Number),
+      pre: dash < 0 ? null : withoutBuild.slice(dash + 1).split('.'),
+    };
+  };
   const a = parse(left);
   const b = parse(right);
   for (let index = 0; index < 3; index++) {
-    const difference = (a[index] ?? 0) - (b[index] ?? 0);
-    if (difference !== 0) return difference;
+    const diff = (a.core[index] ?? 0) - (b.core[index] ?? 0);
+    if (diff !== 0) return diff;
   }
-  return left.localeCompare(right);
+  if (a.pre === null || b.pre === null) {
+    return a.pre === null ? (b.pre === null ? 0 : 1) : -1;
+  }
+  for (let index = 0; index < Math.max(a.pre.length, b.pre.length); index++) {
+    const x = a.pre[index];
+    const y = b.pre[index];
+    if (x === undefined) return -1;
+    if (y === undefined) return 1;
+    if (x === y) continue;
+    const xn = /^[0-9]+$/.test(x);
+    const yn = /^[0-9]+$/.test(y);
+    if (xn && yn) return BigInt(x) < BigInt(y) ? -1 : 1;
+    if (xn !== yn) return xn ? -1 : 1;
+    return x < y ? -1 : 1;
+  }
+  return 0;
 }
 function sameSet(a: string[], b: string[]): boolean {
   return a.length === b.length && [...a].sort().every((x, i) => x === [...b].sort()[i]);
