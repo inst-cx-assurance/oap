@@ -1,4 +1,4 @@
-# Open decisions requiring Paul and ICxA approval
+# Open decisions requiring ICxA governance approval
 
 ## Controlled-source and normative mapping
 
@@ -13,7 +13,7 @@
 
 ## Governance and legal
 
-- Approve specification and code/schema/test licenses, patent contribution policy, attribution, disclaimers, trademarks, namespace, public release, profile approval, certification rules, and vendor redistribution terms.
+- Review proposed changes to published licensing terms, patent contribution policy, attribution, disclaimers, trademarks, namespace, release governance, profile approval, certification rules, and vendor redistribution terms.
 - Formally appoint the steward, namespace custodian, maintainers, profile approvers, and conformance-suite authority.
 - Approve or replace provisional conformance category names.
 
@@ -24,4 +24,4 @@
 - Approve delegation scope, permitted chain depth, withdrawal effects, conflict-declaration validity/review intervals, and authorization-condition closure policy. Draft controls prevent expansion, cycles, retroactive declarations, and silent replacement without claiming final governance policy.
 - Review the draft compatibility rename from ambiguous external `packageVersion` to `packageSchemaVersion`, which maps to OCRS v0.1 root `schemaVersion`; OCRS has no separate package-version field.
 
-Until resolved, this repository remains a private technical draft and does not claim OAP ICxA Profile Conformance or legal openness.
+Until resolved, this repository is a public experimental technical draft and does not claim OAP ICxA Profile Conformance or legal openness.

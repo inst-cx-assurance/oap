@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { canonicalize, inventoryDigest, sha256 } from './integrity.js';
 import { type Diagnostic, type OapRecord } from './types.js';
 
@@ -119,12 +120,11 @@ export function verifyExternalPackage(
     );
   const copy = structuredClone(supplied);
   delete copy.manifest.contentHash;
-  if (manifest.contentHash?.value !== sha256(canonicalize(copy)))
+  if (!validDigest(manifest.contentHash, canonicalize(copy)))
     push('EXTERNAL_PACKAGE_HASH_MISMATCH', 'OCRS content does not match its declared digest.');
   if (
     !reference.inventoryDigest ||
-    (reference.inventoryDigest as { value: string }).value !==
-      sha256(canonicalize(manifest.inventory))
+    !validDigest(reference.inventoryDigest, canonicalize(manifest.inventory))
   )
     push('EXTERNAL_INVENTORY_DIGEST_MISMATCH', 'OCRS inventory does not match its bound digest.');
   return unique(diagnostics);
@@ -185,4 +185,14 @@ function unique(values: Diagnostic[]): Diagnostic[] {
     seen.add(key);
     return true;
   });
+}
+
+function validDigest(value: unknown, content: string): boolean {
+  if (!value || typeof value !== 'object') return false;
+  const hash = value as { algorithm?: unknown; value?: unknown };
+  if (hash.algorithm !== 'sha256' && hash.algorithm !== 'sha512') return false;
+  return (
+    typeof hash.value === 'string' &&
+    hash.value === createHash(hash.algorithm).update(content, 'utf8').digest('hex')
+  );
 }

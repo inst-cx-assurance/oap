@@ -11,4 +11,4 @@ Reviewed in full before normative schema creation. Controlled PDFs remain outsid
 | ICXA-20100/20101/20102/20103                         | 2026 Rev 0 review editions                                     | `eef09b…`, `e011d2…`, `f97e51…`, `aaae17…`                         |
 | ICXA-20200/20201/20202/20203                         | 2026 Rev 0 review editions                                     | `bf8b94…`, `a81036…`, `3dd102…`, `82c0dc…`                         |
 
-The complete OCRS repository at adjacent source commit `dab249a1e99706fec8ce74f74297cbb6d1aed4bd` was reviewed (171 files, 501,960 bytes in the audit read). Baseline and final commit/status checks are recorded in the audit report; the pre-existing untracked `ocrs-1.code-workspace` is not attributed to OAP work. OCRS namespace, schemas, source, profiles, ADRs, conformance behavior, canonicalization, examples, and audit reports informed only the external interoperability boundary.
+The OCRS interoperability contract is exercised against the version pinned by the OAP CI workflow. Controlled source documents are not distributed with the reference implementation.

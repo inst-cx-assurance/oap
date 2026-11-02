@@ -2,6 +2,6 @@
 
 ICxA is proposed as controller of the official OAP specification, namespace, core ontology, controlled terms, official profiles, conformance suites, versions, and future certification marks. These appointments and authorities remain subject to formal approval.
 
-Independent implementation is intended, subject to final licenses. An implementation may validate or exchange OAP data without receiving human authority. Only appointed people acting within supplied authority records perform Outcome Auditor evaluation or Outcome Director determination, residual-risk acceptance, and Outcome Authorization.
+Independent implementation is intended, subject to the published LICENSE and specification/LICENSE terms. An implementation may validate or exchange OAP data without receiving human authority. Only appointed people acting within supplied authority records perform Outcome Auditor evaluation or Outcome Director determination, residual-risk acceptance, and Outcome Authorization.
 
 Changes to controlled meaning require review, traceability, a version impact assessment, and an ADR. Informative guidance cannot silently become a normative protocol requirement. Conformance certification and publication policy are not defined by this draft.

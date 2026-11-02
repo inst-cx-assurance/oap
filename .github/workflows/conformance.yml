@@ -27,3 +27,12 @@ jobs:
       - run: npm ci
       - run: npm run conformance:core
       - run: npm audit
+      - name: Check out pinned OCRS interoperability fixture
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: inst-cx-assurance/ocrs
+          ref: c94065bf48a1b2a80c86935117790f28f401e5f7
+          path: .external-ocrs
+          persist-credentials: false
+      - name: Verify pinned OCRS content
+        run: npm run verify:ocrs -- .external-ocrs/examples/cw-101-reference/rfdc-ready.package.json

@@ -13,7 +13,44 @@ let cached: SchemaContext | undefined;
 
 export function validatePackage(input: unknown, context?: SchemaContext): Diagnostic[] {
   context ??= cached ?? (cached = createSchemaContext());
-  if (!context.validate(input)) return (context.errors() ?? []).map(schemaDiagnostic);
+  if (!context.validate(input)) {
+    const schemaErrors = context.errors() ?? [];
+    const records = (input as { records?: unknown[] } | null)?.records;
+    const filtered = schemaErrors.filter((error) => {
+      const match = /^\/records\/(\d+)(?:\/|$)/.exec(error.instancePath);
+      if (!match || !Array.isArray(records)) return true;
+      const record = records[Number(match[1])] as { entityType?: string } | null;
+      if (!record || typeof record.entityType !== 'string') return true;
+      const validator = context!.getSchema(
+        'https://spec.oap.example/v0.1/schemas/' + record.entityType + '.schema.json',
+      );
+      if (!validator) return true;
+      // The selected record schema provides precise errors below, not union branches.
+      return false;
+    });
+    if (Array.isArray(records))
+      for (const [index, record] of records.entries()) {
+        if (!record || typeof record !== 'object') continue;
+        const entityType = (record as { entityType?: unknown }).entityType;
+        if (typeof entityType !== 'string') continue;
+        const validator = context.getSchema(
+          'https://spec.oap.example/v0.1/schemas/' + entityType + '.schema.json',
+        );
+        if (validator && !validator(record))
+          for (const error of validator.errors ?? []) {
+            filtered.push({ ...error, instancePath: '/records/' + index + error.instancePath });
+          }
+      }
+    return [
+      ...filtered.map(schemaDiagnostic),
+      {
+        code: 'SEMANTIC_VALIDATION_NOT_PERFORMED',
+        path: '/',
+        message: 'Partial validation: schema errors prevented semantic validation.',
+        supportingRecordIds: [],
+      },
+    ];
+  }
   const pkg = input as OapPackage;
   const diagnostics: Diagnostic[] = [];
   const byId = new Map<string, OapRecord>();
@@ -295,17 +332,12 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
   for (const delegation of records('delegation')) {
     const delegator = get(delegation.delegatorRoleAssignmentId);
     const delegate = get(delegation.delegateRoleAssignmentId);
-    if (
-      !delegator ||
-      !delegate ||
-      delegator.role !== delegate.role ||
-      delegation.status !== 'active'
-    )
+    if (!delegator || !delegate || delegator.role !== delegate.role)
       add(
         diagnostics,
         'INVALID_DELEGATION',
         `/${delegation.id}`,
-        'Delegation is invalid, inactive, or changes the assigned role.',
+        'Delegation has missing assignments or changes the assigned role.',
         [delegation.id],
       );
   }
@@ -381,24 +413,7 @@ export function validatePackage(input: unknown, context?: SchemaContext): Diagno
         'Evaluation includes an assessment for another submission.',
         [evaluation.id],
       );
-    const computed = assessments.every(
-      (a) =>
-        a.sufficiency === 'sufficient' &&
-        a.admissibility === 'admissible' &&
-        a.credibility === 'credible' &&
-        a.relevance === 'relevant' &&
-        a.currency === 'current',
-    )
-      ? 'evidence_sufficient'
-      : assessments.some(
-            (a) =>
-              a.sufficiency === 'insufficient' ||
-              a.admissibility === 'inadmissible' ||
-              a.credibility === 'not_credible' ||
-              a.relevance === 'not_relevant',
-          )
-        ? 'evidence_insufficient'
-        : 'indeterminate';
+    const computed = assessmentConclusion(assessments);
     if (assessments.length !== 0 && evaluation.conclusion !== computed)
       add(
         diagnostics,
@@ -863,11 +878,17 @@ function validateEvidenceSemantics(
 
   for (const evaluation of all('outcome-auditor-evaluation')) {
     const submission = byId.get(String(evaluation.submissionId));
-    const applicable = all('evidence-sufficiency-assessment').filter(
-      (assessment) =>
-        assessment.submissionId === evaluation.submissionId &&
-        !pkg.records.some((candidate) => candidate.supersedes === assessment.id),
-    );
+    const applicable = current(evaluation)
+      ? all('evidence-sufficiency-assessment').filter(
+          (assessment) =>
+            assessment.submissionId === evaluation.submissionId && current(assessment),
+        )
+      : idList(evaluation.assessmentIds)
+          .map((id) => byId.get(id))
+          .filter(
+            (record): record is OapRecord =>
+              record?.entityType === 'evidence-sufficiency-assessment',
+          );
     if (
       !sameRecordContext(evaluation, submission) ||
       applicable.some((assessment) => !sameRecordContext(evaluation, assessment))
@@ -877,6 +898,19 @@ function validateEvidenceSemantics(
         'ASSESSMENT_CONTEXT_MISMATCH',
         `/${evaluation.id}`,
         'Evaluation, submission, and all applicable assessments must share one context.',
+        [evaluation.id],
+      );
+    if (
+      !sameSet(
+        applicable.map((a) => String(a.criterionId)),
+        idList(submission?.criterionIds),
+      )
+    )
+      add(
+        out,
+        'INCOMPLETE_ASSESSMENT_COVERAGE',
+        '/' + evaluation.id + '/assessmentIds',
+        'Evaluation assessments must cover every submitted criterion exactly once.',
         [evaluation.id],
       );
     if (
@@ -904,28 +938,7 @@ function validateEvidenceSemantics(
         'Evaluation basis must include every current assessment and submitted external package.',
         [evaluation.id],
       );
-    const expected =
-      applicable.length === 0
-        ? 'indeterminate'
-        : applicable.every(
-              (assessment) =>
-                assessment.admissibility === 'admissible' &&
-                assessment.sufficiency === 'sufficient' &&
-                assessment.credibility === 'credible' &&
-                assessment.relevance === 'relevant' &&
-                assessment.currency === 'current',
-            )
-          ? 'evidence_sufficient'
-          : applicable.some(
-                (assessment) =>
-                  assessment.admissibility === 'inadmissible' ||
-                  assessment.sufficiency === 'insufficient' ||
-                  assessment.credibility === 'not_credible' ||
-                  assessment.relevance === 'not_relevant' ||
-                  assessment.currency === 'stale',
-              )
-            ? 'evidence_insufficient'
-            : 'indeterminate';
+    const expected = assessmentConclusion(applicable);
     if (evaluation.conclusion !== expected)
       add(
         out,
@@ -1682,7 +1695,7 @@ function validateSupersession(
       ),
   );
   const keys = activeAuthorizations.map(
-    (r) => `${r.projectId}|${r.outcomeId}|${JSON.stringify(r.boundaryIds)}`,
+    (r) => `${r.projectId}|${r.outcomeId}|${JSON.stringify(idList(r.boundaryIds).sort())}`,
   );
   if (new Set(keys).size !== keys.length)
     add(
@@ -1744,12 +1757,23 @@ function validateChronology(
   for (const acceptance of pkg.records.filter(
     (record) => record.entityType === 'residual-risk-acceptance',
   )) {
-    const determination = pkg.records.find(
-      (record) =>
-        record.entityType === 'outcome-director-determination' &&
-        record.residualRiskDeclarationId === acceptance.declarationId &&
-        sameRecordContext(record, acceptance),
-    );
+    const candidates = pkg.records
+      .filter(
+        (record) =>
+          record.entityType === 'outcome-director-determination' &&
+          record.residualRiskDeclarationId === acceptance.declarationId &&
+          sameRecordContext(record, acceptance),
+      )
+      .sort(
+        (left, right) =>
+          Date.parse(String(right.determinedAt)) - Date.parse(String(left.determinedAt)) ||
+          left.id.localeCompare(right.id),
+      );
+    const determination =
+      candidates.find(
+        (record) =>
+          Date.parse(String(record.determinedAt)) <= Date.parse(String(acceptance.acceptedAt)),
+      ) ?? candidates.at(-1);
     ordered(acceptance, 'acceptedAt', determination, 'determinedAt');
   }
   for (const authorization of pkg.records.filter(
@@ -1923,4 +1947,31 @@ function uniqueDiagnostics(values: Diagnostic[]): Diagnostic[] {
     seen.add(key);
     return true;
   });
+}
+
+function assessmentConclusion(assessments: OapRecord[]): string {
+  if (assessments.length === 0) return 'indeterminate';
+  if (
+    assessments.every(
+      (a) =>
+        a.sufficiency === 'sufficient' &&
+        a.admissibility === 'admissible' &&
+        a.credibility === 'credible' &&
+        a.relevance === 'relevant' &&
+        a.currency === 'current',
+    )
+  )
+    return 'evidence_sufficient';
+  if (
+    assessments.some(
+      (a) =>
+        a.sufficiency === 'insufficient' ||
+        a.admissibility === 'inadmissible' ||
+        a.credibility === 'not_credible' ||
+        a.relevance === 'not_relevant' ||
+        a.currency === 'stale',
+    )
+  )
+    return 'evidence_insufficient';
+  return 'indeterminate';
 }
