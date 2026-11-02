@@ -1880,7 +1880,7 @@ function sameRecordContext(left: OapRecord, right?: OapRecord): boolean {
 function subset(left: string[], right: string[]): boolean {
   return left.every((value) => right.includes(value));
 }
-function compareVersion(left: string, right: string): number {
+export function compareVersion(left: string, right: string): number {
   const parse = (value: string) => {
     const withoutBuild = value.split('+')[0];
     const dash = withoutBuild.indexOf('-');
