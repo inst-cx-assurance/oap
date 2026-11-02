@@ -1617,12 +1617,12 @@ function validateSupersession(
           'A successor record version must progress beyond the superseded record version.',
           [record.id, prior.id],
         );
-      if (prior && Date.parse(record.createdAt) < Date.parse(prior.createdAt))
+      if (prior && Date.parse(record.createdAt) <= Date.parse(prior.createdAt))
         add(
           out,
           'SUPERSESSION_VERSION_INVALID',
           `/${record.id}/createdAt`,
-          'A successor cannot predate the superseded record.',
+          'A successor must have a strictly later timestamp than the superseded record.',
           [record.id, prior.id],
         );
       const list = successors.get(record.supersedes) ?? [];
