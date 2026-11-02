@@ -4,7 +4,7 @@ OAP is a draft, experimental, independently implementable Level 1 exchange proto
 
 OAP is separate from OCRS. An exact OCRS package may be referenced as evidence input; an OCRS result is never authorization. The reference implementation validates structure, integrity, authority, sequencing, and contradictions. It does not assess evidence professionally, recommend authorization, accept risk, or authorize an outcome.
 
-This private draft is not legally open for redistribution or vendor implementation until licenses are approved. It does not establish ICxA conformity, certification, competence, legal authority, project readiness, or capital-drawdown entitlement.
+Reference software, JSON schemas, tests, fixtures, and machine-readable examples are available under the Apache License, Version 2.0 (see `LICENSE`). Normative specification text in `specification/` is excluded and has separate rights reserved (see `specification/LICENSE`). ICxA trademarks, endorsement, and certification marks are not licensed. This draft does not establish ICxA conformity, certification, competence, legal authority, project readiness, or capital-drawdown entitlement.
 
 ## Commands
 
